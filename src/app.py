@@ -15,6 +15,8 @@ def home():
 
 @app.route("/search/<query>")
 def search(query):
+  if not query.strip():
+    raise Exception("Cannot search based on an empty query")
   image_url = sticker_generation.generate_sticker(query)
 
   return render_template('search.html', query=query, image_url=image_url)

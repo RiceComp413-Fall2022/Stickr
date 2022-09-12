@@ -20,3 +20,13 @@ Blog on what differentiates an effective image prompt: https://www.creativebloq.
 
 Style inspiration:
 https://www.instagram.com/openaidalle/
+
+## Running our code
+After you have cloned our repo into your own local Stickr folder change directories into that folder. You can run the web application in debug mode by running
+'''
+python3 src/app.py
+'''
+Furthermore, the unit tests can be run by running
+'''
+pytest src/test_app.py
+'''
