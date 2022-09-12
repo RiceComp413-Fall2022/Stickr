@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect, request, session
 from forms import SearchForm
+import sticker_generation
 
 app = Flask(__name__)
 
@@ -14,7 +15,9 @@ def home():
 
 @app.route("/search/<query>")
 def search(query):
-  return render_template('search.html', query=query)
+  image_url = sticker_generation.generate_sticker(query)
+
+  return render_template('search.html', query=query, image_url=image_url)
 
   
 if __name__ == '__main__':
