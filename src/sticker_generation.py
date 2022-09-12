@@ -6,6 +6,6 @@ def generate_sticker(query):
     data={
       'text': query,
     },
-    headers={'api-key': 'quickstart-QUdJIGlzIGNvbWluZy4uLi4K'}
+    headers={'api-key': '8bc69e15-14aa-49ce-9b62-7a28f2efa916'}
   )
   return r.json()['output_url']
