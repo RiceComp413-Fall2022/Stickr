@@ -22,7 +22,14 @@ Style inspiration:
 https://www.instagram.com/openaidalle/
 
 ## Running our code
-After you have cloned our repo into your own local Stickr folder change directories into that folder. You can run the web application in debug mode by running
+After you have cloned our repo into your own local Stickr folder change directories into that folder. 
+
+Before running our application, run the build file as follows:
+```
+./build
+```
+
+You can run the web application in debug mode by running
 
 ```
 python3 src/app.py
