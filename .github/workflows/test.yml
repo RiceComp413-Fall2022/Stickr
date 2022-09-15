@@ -35,6 +35,9 @@ jobs:
       - name: Install dependencies
         run: |
           ./build
+      - name: Run style-checking
+        run: |
+          mypy src/ --ignore-missing-imports
       - name: Run tests with pytest and poetry
         run: |
           poetry run pytest
