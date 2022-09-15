@@ -7,4 +7,3 @@ curl -sSL https://install.python-poetry.org | python3 -
 pip3 install poetry
 poetry install
 pip3 install mypy
-mypy --install-types
