@@ -37,7 +37,7 @@ jobs:
           ./build
       - name: Run style-checking
         run: |
-          mypy --install-types
+          python3 -m pip install types-requests
           mypy src/ --ignore-missing-imports
       - name: Run tests with pytest and poetry
         run: |
