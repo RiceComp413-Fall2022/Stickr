@@ -31,13 +31,22 @@ Before running our application, run the build file as follows:
 ./build
 ```
 
-You can run the web application in debug mode by running
+You must then move into the source directory (src), which is the first directory below Stickr
+```
+cd src
+```
 
+From src, you can then run the web application by running
 ```
-python3 src/app.py
+poetry run python3 stickr/app.py
 ```
+
+
+After you have locally started our rigged demo, you must then open the link that it returns (which will look something like "http://127.0.0.1:5000").
+
+
 Furthermore, the unit tests can be run by running
 ```
-pytest src/test_app.py
+poetry run pytest
 ```
 
