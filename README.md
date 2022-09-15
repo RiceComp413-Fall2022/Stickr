@@ -31,14 +31,9 @@ Before running our application, run the build file as follows:
 ./build
 ```
 
-You must then move into the source directory (src), which is the first directory below Stickr
-```
-cd src
-```
-
 From src, you can then run the web application by running
 ```
-poetry run python3 stickr/app.py
+poetry run python3 src/stickr/app.py
 ```
 
 
