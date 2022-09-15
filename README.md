@@ -40,3 +40,4 @@ Furthermore, the unit tests can be run by running
 ```
 pytest src/test_app.py
 ```
+
