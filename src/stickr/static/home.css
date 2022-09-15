@@ -1,0 +1,33 @@
+body {
+  background-color:black
+}
+
+.search-section {
+  margin: 0;
+  position: absolute;
+  left: 14%;
+  top: 50%;
+  width: 72%;
+  padding: 10px;
+  color: white;
+}
+
+.form-group {
+  margin: 0;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+
+}
+
+h1 {
+    position: absolute;
+    font-size: 75px;
+    top: 40%;
+    left: 39%;
+    margin-bottom: 1px;
+    color: white;
+    
+}
+
+
