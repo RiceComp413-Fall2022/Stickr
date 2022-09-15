@@ -35,9 +35,6 @@ jobs:
       - name: Install dependencies
         run: |
           ./build
-      - name: Change directories a level down
-        run: |
-          cd src
       - name: Run tests with pytest and poetry
         run: |
           poetry run pytest
