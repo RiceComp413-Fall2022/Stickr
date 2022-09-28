@@ -13,19 +13,21 @@ a white background and distinct cutout, with simple and cartoon-like images depi
 
 2) Subject Terms - The primary subject or focus of the design. For simplicity, we can limit the
 possible subjects to Rice-specific symbols, and provide them to the user via a dropdown menu.
-Examples: Owl, kangaroo, pig, whale, phoenix
+Examples: Owl, kangaroo, pig, whale
 
 3) Image Prompts - Optional provision of visual target for style and subject of the image.
-Available as files in this directly, correlating to the subject teams. Each of the listed subjects
-is available as a sticker life, cartoon like, and or not stylized image.
+Available as files in the /BaseImages directory, correlating to the subject terms. There are four variations
+for each of the listed subjects available as a basic sticker design.
 
 4) Style Modifiers - Can be added to prompt to produce images in a certain style. will consistently
 reproduce a characteristic style.
 Tangible examples: riding a motorcycle, wearing a hat, playing soccer, using a laptop
 Stylistic examples: minimalist, cartoon, monochrome, picasso
 
+Examples are included in the /Examples subdirectory. A full printout of the images generated can
+be found in the prompt_generations.txt file
 
-Our current UI can be altered in the prompt editing branch to support accepting this input.
+Our current UI can be altered in the prompt editing branch to support accepting this style input.
 In addition, there are many different model-specific tweaks that can be made, such as weight editing,
 or case sensitivity. There are also more advanced prompt engineering techniques. The resources below
 describe the use of quality boosters, repetition, and magic terms.
