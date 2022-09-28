@@ -1,1 +1,36 @@
 This directory contains a number of basic (image, caption) pairs to use as inputs for our model.
+More details on the images included, and the structure of the prompts, can be found below.
+
+Prompt Engineering
+To simplify prompt generation, we can enforce a prompt structure. The structure I propose is based
+on prompt engineering papers, and general guides (links below)
+
+Prompt Structure:
+"Sticker design of" + Subject Terms + Image Prompts + Style Modifiers
+
+1) "Sticker design of" - Tells the model to create a 'sticker' like image. Typically this produces
+a white background and distinct cutout, with simple and cartoon-like images depicted.
+
+2) Subject Terms - The primary subject or focus of the design. For simplicity, we can limit the
+possible subjects to Rice-specific symbols, and provide them to the user via a dropdown menu.
+Examples: Owl, kangaroo, pig, whale, phoenix
+
+3) Image Prompts - Optional provision of visual target for style and subject of the image.
+Available as files in this directly, correlating to the subject teams. Each of the listed subjects
+is available as a sticker life, cartoon like, and or not stylized image.
+
+4) Style Modifiers - Can be added to prompt to produce images in a certain style. will consistently
+reproduce a characteristic style.
+Tangible examples: riding a motorcycle, wearing a hat, playing soccer, using a laptop
+Stylistic examples: minimalist, cartoon, monochrome, picasso
+
+
+Our current UI can be altered in the prompt editing branch to support accepting this input.
+In addition, there are many different model-specific tweaks that can be made, such as weight editing,
+or case sensitivity. There are also more advanced prompt engineering techniques. The resources below
+describe the use of quality boosters, repetition, and magic terms.
+
+Resources
+Paper on taxonomy of prompts - https://arxiv.org/pdf/2204.13988.pdf
+General guide on prompt engineering - https://towardsdatascience.com/a-beginners-guide-to-prompt-design-for-text-to-image-generative-models-8242e1361580
+Comprehensive reference of stylistic DALL-E 2 prompts - https://dallery.gallery/the-dalle-2-prompt-book/
