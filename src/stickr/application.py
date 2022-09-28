@@ -2,18 +2,18 @@ from flask import Flask, render_template, url_for, flash, redirect, request, ses
 from stickr.forms import SearchForm
 import stickr.sticker_generation as sticker_generation
 
-app = Flask(__name__)
+application = Flask(__name__)
 
-app.config['SECRET_KEY'] = '7a3140fad78d44bd'
+application.config['SECRET_KEY'] = '7a3140fad78d44bd'
 
-@app.route("/", methods=['GET', 'POST'])
+@application.route("/", methods=['GET', 'POST'])
 def home():
     form = SearchForm()
     if form.validate_on_submit():
       return redirect(url_for('search', query=request.form['query']))
     return render_template('home.html', form=form)
 
-@app.route("/search/<query>")
+@application.route("/search/<query>")
 def search(query):
   if not query.strip():
     raise Exception("Cannot search based on an empty query")
@@ -23,4 +23,4 @@ def search(query):
 
   
 if __name__ == '__main__':
-  app.run(debug=True)
+  application.run(debug=True)
