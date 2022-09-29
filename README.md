@@ -25,15 +25,15 @@ https://www.instagram.com/openaidalle/
 ## Running our code
 After you have cloned our repo into your own local Stickr folder change directories into that folder. 
 
-Before running our application, run the build file as follows:
+Before running our application, run the build file as follows from the top level of the project:
 
 ```
 ./build
 ```
 
-From src, you can then run the web application by running
+From the top level of the project you can then run the web application by running
 ```
-poetry run python3 src/stickr/app.py
+poetry run python3 application.py
 ```
 
 
