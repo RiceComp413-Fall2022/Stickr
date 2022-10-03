@@ -9,6 +9,12 @@ h1 {
   text-align: center;
 }
 
+.backbutton {
+  position:absolute;
+  top: 10%;
+  left: 10%;
+}
+
 #results {
   width: 800px;
   height: 800px;
