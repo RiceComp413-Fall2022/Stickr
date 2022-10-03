@@ -16,9 +16,9 @@ def home():
 def search(query):
   if not query.strip():
     raise Exception("Cannot search based on an empty query")
-  image_url = generate_stable_diffusion_sticker(query)
+  image_urls = generate_stable_diffusion_sticker(query)
 
-  return render_template('search.html', query=query, image_url=image_url)
+  return render_template('search.html', query=query, image_urls=image_urls)
 
   
 if __name__ == '__main__':

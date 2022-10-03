@@ -1,0 +1,23 @@
+body {
+  background-color:black;
+}
+
+h1 {
+  color: white;
+  position: relative;
+  top: 10px;
+  text-align: center;
+}
+
+#results {
+  width: 800px;
+  height: 800px;
+  margin: 0 auto;
+}
+
+#results > img {
+  float: left;
+  border: 2px solid black;
+  width: 45%;
+  margin: 1.66%;
+}
