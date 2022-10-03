@@ -1,6 +1,7 @@
 import requests
+import replicate
 
-def generate_sticker(query):
+def generate_dalle_sticker(query):
   r = requests.post(
     'https://api.deepai.org/api/text2img',
     data={
@@ -9,3 +10,8 @@ def generate_sticker(query):
     headers={'api-key': '8bc69e15-14aa-49ce-9b62-7a28f2efa916'}
   )
   return r.json()['output_url']
+
+def generate_stable_diffusion_sticker(query):
+  model = replicate.models.get("stability-ai/stable-diffusion")
+  output = model.predict(prompt=query)
+  return output[0]
