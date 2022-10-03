@@ -1,5 +1,5 @@
 import pytest
-from sticker_generation import prepend_sticker_design_of
+from src.sticker_generation import prepend_sticker_design_of
 
 prepend_string = "sticker design of "
 query_str = "cats in space"
