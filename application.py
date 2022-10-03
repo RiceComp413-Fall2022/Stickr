@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect, request, session
 from src.forms import SearchForm
-from src.sticker_generation import generate_sticker
+from src.sticker_generation import generate_stable_diffusion_sticker
 
 application = Flask(__name__)
 application.config['SECRET_KEY'] = '7a3140fad78d44bd'
@@ -16,7 +16,7 @@ def home():
 def search(query):
   if not query.strip():
     raise Exception("Cannot search based on an empty query")
-  image_url = generate_sticker(query)
+  image_url = generate_stable_diffusion_sticker(query)
 
   return render_template('search.html', query=query, image_url=image_url)
 
