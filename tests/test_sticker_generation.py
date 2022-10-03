@@ -28,7 +28,7 @@ def test_parse_has_prepend_already():
     result = prepend_sticker_design_of(f"{prepend_string}{query_str}")
     print(result)
     if result != prepend_string+query_str:
-        pytest.fail(f"Yielded: '{result}''; Expected: '{prepend_string}'.")
+        pytest.fail(f"Yielded: '{result}''; Expected: '{prepend_string}' .")
 
 def test_parse_has_prepend_with_surrounding_space():
     result = prepend_sticker_design_of(f" {prepend_string}{query_str}     ")

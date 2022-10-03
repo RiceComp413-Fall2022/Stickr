@@ -20,6 +20,6 @@ def generate_stable_diffusion_sticker(query):
 def prepend_sticker_design_of(query):
   stripped_query = query.strip()
   if "sticker" not in stripped_query.lower():
-    return "sticker design of "+stripped_query
+    return ("sticker design of "+stripped_query)
   else: 
     return stripped_query
