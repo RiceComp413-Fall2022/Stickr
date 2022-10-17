@@ -14,7 +14,7 @@ def generate_dalle_sticker(query):
 def generate_stable_diffusion_sticker(query):
   model = replicate.models.get("stability-ai/stable-diffusion")
   correct_query = prepend_sticker_design_of(query)
-  image_urls = model.predict(prompt=correct_query, num_outputs=4)
+  image_urls = model.predict(prompt=correct_query, num_outputs=1)
   return image_urls
 
 def prepend_sticker_design_of(query):
