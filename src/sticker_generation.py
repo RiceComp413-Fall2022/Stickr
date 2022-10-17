@@ -5,7 +5,7 @@ def generate_dalle_sticker(query):
   r = requests.post(
     'https://api.deepai.org/api/text2img',
     data={
-      'text': prepend_sticker_design_of(query),
+      'text': prompt_engineering(query),
     },
     headers={'api-key': '8bc69e15-14aa-49ce-9b62-7a28f2efa916'}
   )
@@ -13,13 +13,13 @@ def generate_dalle_sticker(query):
 
 def generate_stable_diffusion_sticker(query):
   model = replicate.models.get("stability-ai/stable-diffusion")
-  correct_query = prepend_sticker_design_of(query)
+  correct_query = prompt_engineering(query)
   image_urls = model.predict(prompt=correct_query, num_outputs=1)
   return image_urls
 
-def prepend_sticker_design_of(query):
+def prompt_engineering(query):
   stripped_query = query.strip()
   if "sticker" not in stripped_query.lower():
-    return ("sticker design of "+stripped_query)
+    return ("circular sticker design of "+stripped_query + ", png sticker cutout")
   else: 
     return stripped_query
