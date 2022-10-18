@@ -17,8 +17,17 @@
   <a href="{{ url_for('home') }}" class='btn btn-secondary' id='backbutton'>Create New Search Query</a>
 
   <div id="results">
-    <img src={{ image_urls[0] }} alt="query result one" />
+    <img src={{ image_urls[0] }} alt="query result one" id="img_1"/>
+    <img src={{ image_urls[1] }} alt="query result two" />
+    <img src={{ image_urls[2] }} alt="query result three" />
+    <img src={{ image_urls[3] }} alt="query result four" />
+
   </div>
+
+  <a href="/downloadImg1/{{query}}" class='btn btn-secondary' id='downloadImg1'>Download Image 1</a>
+  <a href="/downloadImg2/{{query}}" class='btn btn-secondary' id='downloadImg2'>Download Image 2</a>
+  <a href="/downloadImg3/{{query}}" class='btn btn-secondary' id='downloadImg3'>Download Image 3</a>
+  <a href="/downloadImg4/{{query}}" class='btn btn-secondary' id='downloadImg4'>Download Image 4</a>
   
 
   <!-- Optional JavaScript -->
