@@ -17,6 +17,15 @@ def generate_stable_diffusion_sticker(query):
   image_urls = model.predict(prompt=correct_query, num_outputs=4)
   return image_urls
 
+def generate_dummy_sticker(query):
+  image_urls = [
+  "https://www.w3schools.com/images/w3schools_green.jpg", 
+  "https://www.w3schools.com/images/w3schools_green.jpg", 
+  "https://www.w3schools.com/images/w3schools_green.jpg",
+  "https://www.w3schools.com/images/w3schools_green.jpg"
+  ]
+  return image_urls
+
 def prepend_sticker_design_of(query):
   stripped_query = query.strip()
   if "sticker" not in stripped_query.lower():
