@@ -17,35 +17,134 @@
   <a href="{{ url_for('home') }}" class='btn btn-secondary' id='backbutton'>Create New Search Query</a>
 
   <div id="results">
-    <div class="container" id="top_left_image">
+    <div class="container" id="img_1">
       <img src={{ image_urls[0] }} alt="query result one"/>
+      <button type="button" class="modal-btn" data-toggle="modal" data-target="#img_1_modal">Edit</button>
       <a href="/downloadImg1/{{query}}" class='btn'>
         <i class="fa fa-download"></i>
       </a>
     </div>
 
-    <div class="container" id="top_right_image">
+    <div class="container" id="img_2">
       <img src={{ image_urls[1] }} alt="query result two"/>
+      <button type="button" class="modal-btn" data-toggle="modal" data-target="#img_2_modal">Edit</button>
       <a href="/downloadImg2/{{query}}" class='btn'>
         <i class="fa fa-download"></i>
       </a>
     </div>
 
-    <div class="container" id="bottom_left_image">
-      <img src={{ image_urls[2] }} alt="query result three"/>
+    <div class="container" id="img_3">
+      <img src={{ image_urls[2] }} alt="query result three" onclick="zoom(this.id)"/>
+      <button type="button" class="modal-btn" data-toggle="modal" data-target="#img_3_modal">Edit</button>
       <a href="/downloadImg3/{{query}}" class='btn'>
         <i class="fa fa-download"></i>
       </a>
     </div>
 
-    <div class="container" id="bottom_right_image">
-      <img src={{ image_urls[3] }} alt="query result four"/>
+    <div class="container" id="img_4">
+    <img src={{ image_urls[3] }} alt="query result four" onclick="zoom({img_4})"/>
+      <button type="button" class="modal-btn" data-toggle="modal" data-target="#img_4_modal">Edit</button>
       <a href="/downloadImg4/{{query}}" class='btn'>
         <i class="fa fa-download"></i>
       </a>
+    </div> 
+    
+    <!-- Modals for Editting -->
+    <div class="modal fade bd-example-modal-lg" id="img_1_modal" tabindex="-1" role="dialog" aria-labelledby="Editing View for Image 1" aria-hidden="true"> -->
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="img_1_modal_title">1st Image Result for "{{query}}"</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="imgViewer" style="overflow-x: scroll;">
+              <img class="img-responsive" src={{ image_urls[0] }} alt="query result one"/>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
+
+  <div class="modal fade bd-example-modal-lg" id="img_2_modal" tabindex="-1" role="dialog" aria-labelledby="Editing View for Image 2" aria-hidden="true"> -->
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="img_2_modal_title">2nd Image Result for "{{query}}"</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="imgViewer" style="overflow-x: scroll;">
+            <img class="img-responsive" src={{ image_urls[1] }} alt="query result two"/>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+    <div class="modal fade bd-example-modal-lg" id="img_3_modal" tabindex="-1" role="dialog" aria-labelledby="Editing View for Image 3" aria-hidden="true"> -->
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="img_3_modal_title">3rd Image Result for "{{query}}"</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="imgViewer" style="overflow-x: scroll;">
+              <img class="img-responsive" src={{ image_urls[2] }} alt="query result three"/>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal fade bd-example-modal-lg" id="img_4_modal" tabindex="-1" role="dialog" aria-labelledby="Editing View for Image 4" aria-hidden="true"> -->
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="img_4_modal_title">4th Image Result for "{{query}}"</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="imgViewer" style="overflow-x: scroll;">
+            <img class="img-responsive" src={{ image_urls[3] }} alt="query result four"/>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
