@@ -6,9 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='search.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
   <title>AI-Based Sticker Generation</title>
 </head>
 <body>
@@ -19,7 +25,9 @@
   <div id="results">
     <div class="container" id="img_1">
       <img src={{ image_urls[0] }} alt="query result one"/>
-      <button type="button" class="modal-btn" data-toggle="modal" data-target="#img_1_modal">Edit</button>
+      <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_1_modal">
+        <span class="glyphicon glyphicon-pencil"></span>
+      </button>
       <a href="/downloadImg1/{{query}}" class='btn'>
         <i class="fa fa-download"></i>
       </a>
@@ -27,23 +35,29 @@
 
     <div class="container" id="img_2">
       <img src={{ image_urls[1] }} alt="query result two"/>
-      <button type="button" class="modal-btn" data-toggle="modal" data-target="#img_2_modal">Edit</button>
+      <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_2_modal">
+        <span class="glyphicon glyphicon-pencil"></span>
+      </button>
       <a href="/downloadImg2/{{query}}" class='btn'>
         <i class="fa fa-download"></i>
       </a>
     </div>
 
     <div class="container" id="img_3">
-      <img src={{ image_urls[2] }} alt="query result three" onclick="zoom(this.id)"/>
-      <button type="button" class="modal-btn" data-toggle="modal" data-target="#img_3_modal">Edit</button>
+      <img src={{ image_urls[2] }} alt="query result three"/>
+      <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_3_modal">
+        <span class="glyphicon glyphicon-pencil"></span>
+      </button>
       <a href="/downloadImg3/{{query}}" class='btn'>
         <i class="fa fa-download"></i>
       </a>
     </div>
 
     <div class="container" id="img_4">
-    <img src={{ image_urls[3] }} alt="query result four" onclick="zoom({img_4})"/>
-      <button type="button" class="modal-btn" data-toggle="modal" data-target="#img_4_modal">Edit</button>
+    <img src={{ image_urls[3] }} alt="query result four"/>
+      <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_4_modal">
+        <span class="glyphicon glyphicon-pencil"></span>
+      </button>
       <a href="/downloadImg4/{{query}}" class='btn'>
         <i class="fa fa-download"></i>
       </a>

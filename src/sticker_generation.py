@@ -19,10 +19,10 @@ def generate_stable_diffusion_sticker(query):
 
 def generate_dummy_sticker(query):
   image_urls = [
-  "https://www.w3schools.com/images/w3schools_green.jpg", 
-  "https://www.w3schools.com/images/w3schools_green.jpg", 
-  "https://www.w3schools.com/images/w3schools_green.jpg",
-  "https://www.w3schools.com/images/w3schools_green.jpg"
+  "https://upload.wikimedia.org/wikipedia/commons/c/cc/Icon_Pinguin_1_512x512.png", 
+  "https://www.freepnglogos.com/uploads/512x512-logo/512x512-transparent-instagram-logo-icon-5.png", 
+  "https://www.freepnglogos.com/uploads/512x512-logo-png/512x512-logo-iron-man-logo-png-iron-man-wallpaper-9.png",
+  "https://www.freepnglogos.com/uploads/512x512-logo/512x512-transparent-logo-twitter-birds-logos-23.png"
   ]
   return image_urls
 
