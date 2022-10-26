@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect, request, session
 from src.forms import SearchForm
-from src.sticker_generation import generate_stable_diffusion_sticker
+from src.sticker_generation import generate_stable_diffusion_sticker, engineer_prompt
 
 application = Flask(__name__)
 application.config['SECRET_KEY'] = '7a3140fad78d44bd'
@@ -9,7 +9,10 @@ application.config['SECRET_KEY'] = '7a3140fad78d44bd'
 def home():
     form = SearchForm()
     if form.validate_on_submit():
-      return redirect(url_for('search', query=request.form['query']))
+        query = request.form['query']
+        cutout = request.form['cutout']
+        final_query = engineer_prompt(query, cutout)
+        return redirect(url_for('search', query=final_query))
     return render_template('home.html', form=form)
 
 @application.route("/search/<query>")
