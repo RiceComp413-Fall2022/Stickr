@@ -8,7 +8,7 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='search.css') }}">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <title>AI-Based Sticker Generation</title>
 </head>
 <body>
@@ -17,12 +17,35 @@
   <a href="{{ url_for('home') }}" class='btn btn-secondary' id='backbutton'>Create New Search Query</a>
 
   <div id="results">
-    <img src={{ image_urls[0] }} alt="query result one" />
-    <img src={{ image_urls[1] }} alt="query result two" />
-    <img src={{ image_urls[2] }} alt="query result three" />
-    <img src={{ image_urls[3] }} alt="query result four" />
+    <div class="container" id="top_left_image">
+      <img src={{ image_urls[0] }} alt="query result one"/>
+      <a href="/downloadImg1/{{query}}" class='btn'>
+        <i class="fa fa-download"></i>
+      </a>
+    </div>
+
+    <div class="container" id="top_right_image">
+      <img src={{ image_urls[1] }} alt="query result two"/>
+      <a href="/downloadImg2/{{query}}" class='btn'>
+        <i class="fa fa-download"></i>
+      </a>
+    </div>
+
+    <div class="container" id="bottom_left_image">
+      <img src={{ image_urls[2] }} alt="query result three"/>
+      <a href="/downloadImg3/{{query}}" class='btn'>
+        <i class="fa fa-download"></i>
+      </a>
+    </div>
+
+    <div class="container" id="bottom_right_image">
+      <img src={{ image_urls[3] }} alt="query result four"/>
+      <a href="/downloadImg4/{{query}}" class='btn'>
+        <i class="fa fa-download"></i>
+      </a>
+    </div>
+
   </div>
-  
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
