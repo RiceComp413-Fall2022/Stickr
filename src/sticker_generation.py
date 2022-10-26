@@ -26,7 +26,7 @@ def engineer_prompt(query, cutout):
 
   # Prepend style guide
   if "sticker" not in stripped_query.lower():
-    final_query = "sticker illustration of " + final_query
+    final_query = "Sticker illustration of " + final_query
 
   # Append cutout specification
   if cutout == "circle":
