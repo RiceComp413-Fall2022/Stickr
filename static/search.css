@@ -126,7 +126,22 @@ h1 {
   background: #555555;
 }
 
-#canvas {
+#firstImageCanvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#secondImageCanvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#thirdImageCanvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#fourthImageCanvas {
   max-width: 100%;
   max-height: 100%;
 }
