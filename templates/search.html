@@ -14,6 +14,14 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    const firstImageLoc = '{{ image_urls[0] }}'
+    const secondImageLoc = '{{ image_urls[1] }}'
+    const thirdImageLoc = '{{ image_urls[2] }}'
+    const fourthImageLoc = '{{ image_urls[3] }}'
+  </script>
+  <script src="{{ url_for('static', filename='search.js') }}" defer></script>
+
 
   <title>AI-Based Sticker Generation</title>
 </head>
@@ -25,7 +33,7 @@
   <div id="results">
     <div class="container" id="img_1">
       <img src={{ image_urls[0] }} alt="query result one"/>
-      <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_1_modal">
+      <button id="openFirstImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_1_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
       <a href="/downloadImg1/{{query}}" class='btn'>
@@ -35,7 +43,7 @@
 
     <div class="container" id="img_2">
       <img src={{ image_urls[1] }} alt="query result two"/>
-      <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_2_modal">
+      <button id="openSecondImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_2_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
       <a href="/downloadImg2/{{query}}" class='btn'>
@@ -45,7 +53,7 @@
 
     <div class="container" id="img_3">
       <img src={{ image_urls[2] }} alt="query result three"/>
-      <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_3_modal">
+      <button id="openThirdImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_3_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
       <a href="/downloadImg3/{{query}}" class='btn'>
@@ -55,7 +63,7 @@
 
     <div class="container" id="img_4">
     <img src={{ image_urls[3] }} alt="query result four"/>
-      <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_4_modal">
+      <button id="openFourthImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_4_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
       <a href="/downloadImg4/{{query}}" class='btn'>
@@ -97,7 +105,7 @@
             </div>
             
             <div class="image-area">
-              <img class="img-responsive" src={{ image_urls[0] }} alt="query result one"/>
+              <canvas id="firstImageCanvas" height="500" width="500"></canvas>
             </div>
           </div>
           <div class="modal-footer">
@@ -140,7 +148,7 @@
             </div>
             
             <div class="image-area">
-              <img class="img-responsive" src={{ image_urls[1] }} alt="query result two"/>
+              <canvas id="secondImageCanvas" height="500" width="500"></canvas>
             </div>
           </div>
           <div class="modal-footer">
@@ -183,7 +191,7 @@
             </div>
             
             <div class="image-area">
-              <img class="img-responsive" src={{ image_urls[2] }} alt="query result three"/>
+              <canvas id="thirdImageCanvas" height="500" width="500"></canvas>
             </div>
           </div>
           <div class="modal-footer">
@@ -226,7 +234,7 @@
             </div>
             
             <div class="image-area">
-              <img class="img-responsive" src={{ image_urls[3] }} alt="query result four"/>
+              <canvas id="fourthImageCanvas" height="500" width="500"></canvas>
             </div>
           </div>
           <div class="modal-footer">
