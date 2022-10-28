@@ -31,6 +31,14 @@ let firstImageModalBtn = document.getElementById("openFirstImageModal");
 let secondImageModalBtn = document.getElementById("openSecondImageModal");
 let thirdImageModalBtn = document.getElementById("openThirdImageModal");
 let fourthImageModalBtn = document.getElementById("openFourthImageModal");
+let currFirstImage = document.getElementById("firstImage");
+let currSecondImage = document.getElementById("secondImage");
+let currThirdImage = document.getElementById("thirdImage");
+let currFourthImage = document.getElementById("fourthImage");
+let firstImageSaveBtn = document.getElementById("firstImageSave");
+let secondImageSaveBtn = document.getElementById("secondImageSave");
+let thirdImageSaveBtn = document.getElementById("thirdImageSave");
+let fourthImageSaveBtn = document.getElementById("fourthImageSave");
 const firstImageSettings = {};
 const secondImageSettings = {};
 const thirdImageSettings = {};
@@ -129,6 +137,7 @@ function generateFourthImageFilter() {
 }
 
 function renderFirstImage() {
+  firstImage.setAttribute('crossorigin', 'anonymous');
   firstImage.src = firstImageLoc;
   firstImageCanvas.width = firstImage.width;
   firstImageCanvas.height = firstImage.height;
@@ -138,15 +147,19 @@ function renderFirstImage() {
 }
 
 function renderSecondImage() {
+  
   secondImage.src = secondImageLoc;
   secondImageCanvas.width = secondImage.width;
   secondImageCanvas.height = secondImage.height;
 
   secondCanvasCtx.filter = generateSecondImageFilter();
   secondCanvasCtx.drawImage(secondImage, 0, 0);
+
+  secondImage.setAttribute('crossorigin', 'anonymous');
 }
 
 function renderThirdImage() {
+  thirdImage.setAttribute('crossorigin', 'anonymous');
   thirdImage.src = thirdImageLoc;
   thirdImageCanvas.width = thirdImage.width;
   thirdImageCanvas.height = thirdImage.height;
@@ -156,6 +169,7 @@ function renderThirdImage() {
 }
 
 function renderFourthImage() {
+  fourthImage.setAttribute('crossorigin', 'anonymous');
   fourthImage.src = fourthImageLoc;
   fourthImageCanvas.width = fourthImage.width;
   fourthImageCanvas.height = fourthImage.height;
@@ -163,6 +177,50 @@ function renderFourthImage() {
   fourthCanvasCtx.filter = generateFourthImageFilter();
   fourthCanvasCtx.drawImage(fourthImage, 0, 0);
 }
+
+function saveFirstImage() {
+  let newUrl = firstImageCanvas.toDataURL();
+  currFirstImage.setAttribute('crossorigin', 'anonymous');
+  currFirstImage.src = newUrl;
+  firstImageLoc = newUrl;
+}
+
+function saveSecondImage() {
+  let newUrl = secondImageCanvas.toDataURL();
+  currSecondImage.setAttribute('crossorigin', 'anonymous');
+  currSecondImage.src = newUrl;
+  secondImageLoc = newUrl;
+}
+
+function saveThirdImage() {
+  let newUrl = thirdImageCanvas.toDataURL();
+  currThirdImage.setAttribute('crossorigin', 'anonymous');
+  currThirdImage.src = newUrl;
+  thirdImageLoc = newUrl;
+}
+
+function saveFourthImage() {
+  let newUrl = fourthImageCanvas.toDataURL();
+  currFourthImage.setAttribute('crossorigin', 'anonymous');
+  currFourthImage.src = newUrl;
+  fourthImageLoc = newUrl;
+}
+
+firstImageSaveBtn.addEventListener('click', event => {
+  saveFirstImage();
+});
+
+secondImageSaveBtn.addEventListener('click', event => {
+  saveSecondImage();
+});
+
+thirdImageSaveBtn.addEventListener('click', event => {
+  saveThirdImage();
+});
+
+fourthImageSaveBtn.addEventListener('click', event => {
+  saveFourthImage();
+});
 
 firstImageModalBtn.addEventListener('click', event => {
   renderFirstImage();
