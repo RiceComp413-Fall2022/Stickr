@@ -9,6 +9,9 @@ h1 {
   text-align: center;
 }
 
+.btn.btn-primary {
+  font-size:16px;
+}
 .btn.btn-secondary {
   position:absolute;
   top: 2%;

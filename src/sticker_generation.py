@@ -20,7 +20,7 @@ def generate_stable_diffusion_sticker(query):
 def generate_dummy_sticker(query):
   image_urls = [
   "https://upload.wikimedia.org/wikipedia/commons/c/cc/Icon_Pinguin_1_512x512.png", 
-  "https://www.freepnglogos.com/uploads/512x512-logo/512x512-transparent-instagram-logo-icon-5.png", 
+  "https://replicate.com/api/models/stability-ai/stable-diffusion/files/19e3a073-de22-49fd-97e5-cd3942b41c9b/out-0.png", 
   "https://www.freepnglogos.com/uploads/512x512-logo-png/512x512-logo-iron-man-logo-png-iron-man-wallpaper-9.png",
   "https://www.freepnglogos.com/uploads/512x512-logo/512x512-transparent-logo-twitter-birds-logos-23.png"
   ]

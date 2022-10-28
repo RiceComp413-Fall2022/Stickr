@@ -15,10 +15,10 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script type="text/javascript">
-    const firstImageLoc = '{{ image_urls[0] }}'
-    const secondImageLoc = '{{ image_urls[1] }}'
-    const thirdImageLoc = '{{ image_urls[2] }}'
-    const fourthImageLoc = '{{ image_urls[3] }}'
+    let firstImageLoc = '{{ image_urls[0] }}'
+    let secondImageLoc = '{{ image_urls[1] }}'
+    let thirdImageLoc = '{{ image_urls[2] }}'
+    let fourthImageLoc = '{{ image_urls[3] }}'
   </script>
   <script src="{{ url_for('static', filename='search.js') }}" defer></script>
 
@@ -32,7 +32,7 @@
 
   <div id="results">
     <div class="container" id="img_1">
-      <img src={{ image_urls[0] }} alt="query result one"/>
+      <img id="firstImage" src={{ image_urls[0] }} alt="query result one"/>
       <button id="openFirstImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_1_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
@@ -42,7 +42,7 @@
     </div>
 
     <div class="container" id="img_2">
-      <img src={{ image_urls[1] }} alt="query result two"/>
+      <img id="secondImage" src={{ image_urls[1] }} alt="query result two"/>
       <button id="openSecondImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_2_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
@@ -52,7 +52,7 @@
     </div>
 
     <div class="container" id="img_3">
-      <img src={{ image_urls[2] }} alt="query result three"/>
+      <img id="thirdImage" src={{ image_urls[2] }} alt="query result three"/>
       <button id="openThirdImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_3_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
@@ -62,7 +62,7 @@
     </div>
 
     <div class="container" id="img_4">
-    <img src={{ image_urls[3] }} alt="query result four"/>
+    <img id="fourthImage" src={{ image_urls[3] }} alt="query result four"/>
       <button id="openFourthImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_4_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
@@ -109,7 +109,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button id="firstImageSave" type="button" class="btn btn-primary">Save</button>
           </div>
         </div>
       </div>
@@ -152,7 +152,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button id="secondImageSave" type="button" class="btn btn-primary">Save</button>
           </div>
         </div>
       </div>
@@ -195,7 +195,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button id="thirdImageSave" type="button" class="btn btn-primary">Save</button>
           </div>
         </div>
       </div>
@@ -238,7 +238,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button id="fourthImageSave" type="button" class="btn btn-primary">Save</button>
           </div>
         </div>
       </div>
