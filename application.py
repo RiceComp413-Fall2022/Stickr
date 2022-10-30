@@ -6,7 +6,6 @@ import requests
 application = Flask(__name__)
 application.config['SECRET_KEY'] = '7a3140fad78d44bd'
 
-# image_urls = ["https://replicate.com/api/models/stability-ai/stable-diffusion/files/19e3a073-de22-49fd-97e5-cd3942b41c9b/out-0.png"]
 image_urls = []
 @application.route("/", methods=['GET', 'POST'])
 def home():

@@ -148,7 +148,6 @@ function renderFirstImage() {
 }
 
 function renderSecondImage() {
-  
   secondImage.src = secondImageLoc;
   secondImageCanvas.width = secondImage.width;
   secondImageCanvas.height = secondImage.height;
