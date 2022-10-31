@@ -137,17 +137,17 @@ function generateFourthImageFilter() {
 }
 
 function renderFirstImage() {
-  firstImage.setAttribute('crossorigin', 'anonymous');
   firstImage.src = firstImageLoc;
   firstImageCanvas.width = firstImage.width;
   firstImageCanvas.height = firstImage.height;
 
   firstCanvasCtx.filter = generateFirstImageFilter();
   firstCanvasCtx.drawImage(firstImage, 0, 0);
+
+  firstImage.setAttribute('crossorigin', 'anonymous');
 }
 
 function renderSecondImage() {
-  
   secondImage.src = secondImageLoc;
   secondImageCanvas.width = secondImage.width;
   secondImageCanvas.height = secondImage.height;
@@ -159,23 +159,25 @@ function renderSecondImage() {
 }
 
 function renderThirdImage() {
-  thirdImage.setAttribute('crossorigin', 'anonymous');
   thirdImage.src = thirdImageLoc;
   thirdImageCanvas.width = thirdImage.width;
   thirdImageCanvas.height = thirdImage.height;
 
   thirdCanvasCtx.filter = generateThirdImageFilter();
   thirdCanvasCtx.drawImage(thirdImage, 0, 0);
+
+  thirdImage.setAttribute('crossorigin', 'anonymous');
 }
 
 function renderFourthImage() {
-  fourthImage.setAttribute('crossorigin', 'anonymous');
   fourthImage.src = fourthImageLoc;
   fourthImageCanvas.width = fourthImage.width;
   fourthImageCanvas.height = fourthImage.height;
 
   fourthCanvasCtx.filter = generateFourthImageFilter();
   fourthCanvasCtx.drawImage(fourthImage, 0, 0);
+
+  fourthImage.setAttribute('crossorigin', 'anonymous');
 }
 
 function saveFirstImage() {
