@@ -21,7 +21,14 @@
       <fieldset class="form-group">
         <div class="form-group">
           {{ form.query(class="form-control form-control-lg", placeholder="Search for a Sticker")  }}
-            {{ form.cutout() }}
+
+          {% for subfield in form.cutout %}
+            <tr>
+                <td>{{ subfield }}</td>
+                <td>{{ subfield.label }}</td>
+            </tr>
+        {% endfor %}
+
         </div>
       </fieldset>
     </form>
