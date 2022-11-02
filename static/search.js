@@ -139,13 +139,13 @@ function generateFourthImageFilter() {
   return `brightness(${brightness}%) saturate(${saturation}%) blur(${blur}px) invert(${inversion}%)`;
 }
 
-function renderFirstImage() {
+function renderFirstImage(sx = 0, sy = 0, dx = 0, dy = 0) {
   firstImage.src = firstImageLoc;
   firstImageCanvas.width = firstImage.width;
   firstImageCanvas.height = firstImage.height;
 
   firstCanvasCtx.filter = generateFirstImageFilter();
-  firstCanvasCtx.drawImage(firstImage, 0, 0);
+  firstCanvasCtx.drawImage(firstImage, sx, sy, firstImage.width, firstImage.height, dx, dy, firstImage.width, firstImage.height);
 
   firstImage.setAttribute('crossorigin', 'anonymous');
 }
@@ -183,38 +183,19 @@ function renderFourthImage() {
   fourthImage.setAttribute('crossorigin', 'anonymous');
 }
 
-function draw(c, node1, node2, node3, node4, boundary) {
+function draw(c, nodes, boundary) {
   //draw in the container
   // c.fillStyle = "#000000";
   // c.fillRect(container.y, container.x, container.width, container.height);
   // renderFirstImage();
 
-  //draw first node
-  c.arc(node1.x, node1.y, node1.r, 0, 2 * Math.PI);
-  c.fillStyle = node1.color;
-  c.fill()
-  c.closePath();
-  
-  //draw second node
-  c.arc(node2.x, node2.y, node2.r, 0, 2 * Math.PI);
-  c.strokeStyle = node2.color;
-  c.fillStyle = node2.color;
-  c.fill()
-  c.closePath();
-
-  //draw third node
-  c.arc(node3.x, node3.y, node3.r, 0, 2 * Math.PI);
-  c.strokeStyle = node3.color;
-  c.fillStyle = node3.color;
-  c.fill()
-  c.closePath();
-
-  //draw fourth node
-  c.arc(node4.x, node4.y, node4.r, 0, 2 * Math.PI);
-  c.strokeStyle = node4.color;
-  c.fillStyle = node4.color;
-  c.fill()
-  c.closePath();
+  //draw nodes
+  for (var i in nodes) {
+    c.arc(nodes[i].x, nodes[i].y, nodes[i].r, 0, 2 * Math.PI);
+    c.fillStyle = nodes[i].color;
+    c.fill()
+    c.closePath();
+  }
 
   //draw boundary
   c.beginPath();
@@ -290,32 +271,66 @@ function handleMouseDrag(canvas, nodes) {
   var isDrag = false;
   var offset = { x: 0, y: 0, x0: 0, y0: 0 };
   var dragNode = undefined;
+  var last_moved = undefined;
+
   canvas.addEventListener("mousedown", function (e) {
-    var x = e.offsetX, y = e.offsetY;
+    var bbox = canvas.getBoundingClientRect();
+    var x = e.offsetX * (canvas.width  / bbox.width);
+    var y = e.offsetY * (canvas.height / bbox.height);
     for (var i in nodes) {
       if (Math.pow(x - nodes[i].x, 2) + Math.pow(y - nodes[i].y, 2) < Math.pow(nodes[i].r, 2)) {
         isDrag = true;
+        last_moved = i
         dragNode = nodes[i];
         offset = { x: dragNode.x, y: dragNode.y, x0: x, y0: y };
         return;
       }
       else if (i == 1){
-        // window.alert(x);
-        // window.alert(nodes[i].x);
-        // window.alert(y);
-        // window.alert(nodes[i].y);
+        // console.log(x);
+        // console.log(nodes[i].x);
+        // console.log(y);
+        // console.log(nodes[i].y);
         
       }
     }
   });
   canvas.addEventListener("mousemove", function (e) {
     if (isDrag) {
-      dragNode.x = e.offsetX - offset.x0 + offset.x;
-      dragNode.y = e.offsetY - offset.y0 + offset.y;
+      var bbox = canvas.getBoundingClientRect();
+      var x = e.offsetX * (canvas.width  / bbox.width);
+      var y = e.offsetY * (canvas.height / bbox.height);
+      dragNode.x = x - offset.x0 + offset.x;
+      dragNode.y = y - offset.y0 + offset.y;
     }
   });
   canvas.addEventListener("mouseup", function (e) {
+    
+    if (isDrag){
+
+
+      if (last_moved == 0){
+        nodes[1].y = nodes[0].y;
+        nodes[3].x = nodes[0].x;
+      }
+      if (last_moved == 1){
+        nodes[2].x = nodes[1].x;
+        nodes[0].y = nodes[1].y;
+      }
+      if (last_moved == 2){
+        nodes[3].y = nodes[2].y
+        nodes[1].x = nodes[2].x
+      }
+      if (last_moved == 3){
+        nodes[2].y = nodes[3].y
+        nodes[0].x = nodes[3].x
+      }
+      
+    }
+
     isDrag = false;
+    last_moved = undefined;
+
+
   });
   canvas.addEventListener("mouseleave", function (e) {
     isDrag = false;
@@ -325,14 +340,20 @@ function handleMouseDrag(canvas, nodes) {
 function renderFirstCropSquare() {
 
   node_radius = 15
-  var node1 = new Node(0, 0, node_radius);
-  // var node2 = new Node(0, 0);
-  // var node3 = new Node(0, 0);
-  // var node4 = new Node(0, 0);
+  x_1 = 0
+  x_2 = firstImageCanvas.width;
+  y_1 = 0
+  y_2 = firstImageCanvas.height;
 
-  var node2 = new Node(firstImageCanvas.width, 0, node_radius);
-  var node3 = new Node(firstImageCanvas.width, firstImageCanvas.height, node_radius);
-  var node4 = new Node(0, firstImageCanvas.height, node_radius);
+  var node1 = new Node(x_1, y_1, node_radius);
+  // var node1 = new Node(100, 100, node_radius);
+  // var node2 = new Node(200, 100);
+  // var node3 = new Node(200, 200);
+  // var node4 = new Node(100, 200);
+
+  var node2 = new Node(x_2, y_1, node_radius);
+  var node3 = new Node(x_2, y_2, node_radius);
+  var node4 = new Node(x_1, y_2, node_radius);
 
   var boundingBox = new Box(node1, node2, node3, node4);
   
@@ -341,7 +362,7 @@ function renderFirstCropSquare() {
   function updateFrame() {
     firstCanvasCtx.save();
     renderFirstImage();
-    draw(firstCanvasCtx, node1, node2, node3, node4, boundingBox);
+    draw(firstCanvasCtx, [node1, node2, node3, node4], boundingBox);
     firstCanvasCtx.restore();
     requestAnimationFrame(updateFrame)
   };
@@ -354,8 +375,17 @@ function renderFirstCropSquare() {
   // firstCanvasCtx.stroke();
 
   // // firstCanvasCtx.drawImage(image, 150, 200, 500, 300, 60,60, 500, 300);
-  // firstCanvasCtx.drawImage(firstImage, 0, 0, 256, 256, 0, 0, 512, 512)
-  // firstCanvasCtx.drawImage(firstImage, 150, 200, 500, 300, 60,60, 500, 300);
+  // // firstImage.width = 256;
+  // // firstImage.height = 256;
+  // firstImage.left = 0;
+  // firstImage.width = 256;
+  // firstImage.top = 0;
+  // firstImage.height = 256;
+  // console.log(firstImage);
+
+  // // firstCanvasCtx.drawImage(firstImage, 0, 0, 100, 100, 0, 0, firstImage.width, firstImage.height);
+  // console.log("Here");
+  // // firstCanvasCtx.drawImage(firstImage, 150, 200, 500, 300, 60,60, 500, 300);
 
 }
 
@@ -491,3 +521,5 @@ fourthImageBlurInput.addEventListener("change", () =>
 fourthImageInversionInput.addEventListener("change", () =>
   updateFourthImageSetting("inversion", fourthImageInversionInput.value)
 );
+
+// Refer to: https://stackoverflow.com/questions/45449177/dragging-a-circle-on-a-canvas-using-mousedown
