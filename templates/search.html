@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='search.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -20,7 +20,7 @@
     let thirdImageLoc = '{{ image_urls[2] }}'
     let fourthImageLoc = '{{ image_urls[3] }}'
   </script>
-  <script src="{{ url_for('static', filename='search.js') }}" defer></script>
+  <script type="module" src="{{ url_for('static', filename='search.js') }}" ></script>
 
 
   <title>AI-Based Sticker Generation</title>
@@ -31,14 +31,30 @@
   <a href="{{ url_for('home') }}" class='btn btn-secondary' id='backbutton'>Create New Search Query</a>
 
   <div id="results">
+
+    <script type=text/javascript>
+      function download_from_url(url, filename) {
+        var underscore_filename = filename.replace(/ /g,"_");
+        fetch(url).then(function(t) {
+            return t.blob().then((b)=>{
+                var a = document.createElement("a");
+                a.href = URL.createObjectURL(b);
+                a.setAttribute("download", underscore_filename);
+                a.click();
+            }
+            );
+        });
+      }
+    </script>
+    
     <div class="container" id="img_1">
       <img id="firstImage" src={{ image_urls[0] }} alt="query result one"/>
       <button id="openFirstImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_1_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
-      <a href="/downloadImg1/{{query}}" class='btn'>
+      <button class='btn' onclick="download_from_url(firstImageLoc, 'download_{{query}}_1.png')">
         <i class="fa fa-download"></i>
-      </a>
+      </button>
     </div>
 
     <div class="container" id="img_2">
@@ -46,9 +62,9 @@
       <button id="openSecondImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_2_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
-      <a href="/downloadImg2/{{query}}" class='btn'>
+      <button class='btn' onclick="download_from_url(secondImageLoc, 'download_{{query}}_2.png')">
         <i class="fa fa-download"></i>
-      </a>
+      </button>
     </div>
 
     <div class="container" id="img_3">
@@ -56,9 +72,9 @@
       <button id="openThirdImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_3_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
-      <a href="/downloadImg3/{{query}}" class='btn'>
+      <button class='btn' onclick="download_from_url(thirdImageLoc, 'download_{{query}}_3.png')">
         <i class="fa fa-download"></i>
-      </a>
+      </button>
     </div>
 
     <div class="container" id="img_4">
@@ -66,9 +82,9 @@
       <button id="openFourthImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_4_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
-      <a href="/downloadImg4/{{query}}" class='btn'>
+      <button class='btn' onclick="download_from_url(fourthImageLoc, 'download_{{query}}_4.png')">
         <i class="fa fa-download"></i>
-      </a>
+      </button>
     </div> 
     
     <!-- Modals for Editting -->
@@ -116,7 +132,7 @@
     </div>
 
     <div class="modal fade bd-example-modal-lg" id="img_2_modal" tabindex="-1" role="dialog" aria-labelledby="Editing View for Image 2" aria-hidden="true"> -->
-      <div class="modal-dialog modal-lg" role="document"></div>
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -243,7 +259,7 @@
         </div>
       </div>
     </div>
-  
+
   </div>
 
   <!-- Optional JavaScript -->
