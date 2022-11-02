@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect, request, session, Response,send_file
+from flask import Flask, render_template, url_for, flash, redirect, request#, session, Response, send_file
 from src.forms import SearchForm
 from src.sticker_generation import generate_stable_diffusion_sticker, generate_dummy_sticker
 import requests
@@ -23,17 +23,6 @@ def search(query):
 
   return render_template('search.html', query=query, image_urls=image_urls)
 
-@application.route("/downloadImg<int:img_num>/<query>")
-def downloadImg(img_num, query):
-  underscored_query = query.replace(" ","_")
-
-  if len(image_urls) < img_num:
-    return
-  return Response(
-    requests.get(url=image_urls[img_num-1]),
-    mimetype="image/png",
-    headers={"Content-disposition":
-      f"attachment; filename=download_{underscored_query}_{img_num}.png"})
 
 if __name__ == '__main__':
   application.run(debug=True)
