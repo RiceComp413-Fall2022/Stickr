@@ -9,10 +9,11 @@ h1 {
   text-align: center;
 }
 
-.backbutton {
+.btn.btn-secondary {
   position:absolute;
-  top: 10%;
-  left: 10%;
+  top: 2%;
+  left: 2%;
+  font-size:16px;
 }
 
 #results {
@@ -31,6 +32,19 @@ h1 {
 .container {
   position: relative;
   width: 50%;
+}
+
+.container .btn.btn-default.btn-sm {
+  position: absolute;
+  top: 10%;
+  left: 87%;
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .container img {
@@ -54,5 +68,24 @@ h1 {
 }
 
 .container .btn:hover {
+  background-color: black;
+}
+
+.container .modal-btn {
+  position: absolute;
+  top: 90%;
+  left: 17%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.container .modal-btn:hover {
   background-color: black;
 }
