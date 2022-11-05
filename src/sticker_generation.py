@@ -1,7 +1,18 @@
 import requests
 import replicate
+import openai
 
 def generate_dalle_sticker(query):
+  response = openai.Image.create(
+    prompt=query,
+    n=4,
+    size="512x512"
+  )
+  # image_url = response['data'][0]['url']
+  image_urls = [response['data'][i]['url'] for i in range(4)]
+  return image_urls
+
+def generate_deepai_sticker(query):
   r = requests.post(
     'https://api.deepai.org/api/text2img',
     data={

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect, request, session, Response,send_file
 from src.forms import SearchForm
-from src.sticker_generation import generate_stable_diffusion_sticker, engineer_prompt, generate_dummy_sticker
+from src.sticker_generation import generate_stable_diffusion_sticker, engineer_prompt, generate_dummy_sticker, generate_dalle_sticker, generate_deepai_sticker
 import requests
 
 application = Flask(__name__)
@@ -23,8 +23,8 @@ def search(query):
   global image_urls
   if not query.strip():
     raise Exception("Cannot search based on an empty query")
-  image_urls = generate_dummy_sticker(query)
-
+  #image_urls = generate_dalle_sticker(query)
+  image_urls = generate_stable_diffusion_sticker(query)
   return render_template('search.html', query=query, image_urls=image_urls)
 
 @application.route("/downloadImg<int:img_num>/<query>")
