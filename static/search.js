@@ -352,7 +352,6 @@ function renderFirstCropSquare() {
   function updateFrame() {
     firstCanvasCtx.save();
     renderFirstImage();
-    // renderFirstImage(node1.x, node1.y, node2.x-node1.x, node3.y-node1.y);
     draw(firstCanvasCtx, [node1, node2, node3, node4], boundingBox);
     firstCanvasCtx.restore();
 
@@ -366,18 +365,7 @@ function renderFirstCropSquare() {
     cancelAnimationFrame(myReq);
 
     clean_canvas();
-
-
-    // firstCanvasCtx.clearRect(0, 0, firstImageCanvas.width, firstImageCanvas.height);
-
-    // firstCanvasCtx.fillStyle = "rgba(0, 0, 0, 0)";
-    // firstCanvasCtx.fillRect(0, 0, firstCanvasCtx.width, firstCanvasCtx.height); 
-    // firstCanvasCtx.restore();
-
     renderFirstImage();
-
-    window.alert(myReq);
-
 
     clean_canvas();
 
@@ -396,14 +384,6 @@ function renderFirstCropSquare() {
     firstImage.setAttribute('crossorigin', 'anonymous');
 
     saveFirstImage();
-
-
-
-    // let newUrl = firstImageCanvas.toDataURL();
-    // currFirstImage.setAttribute('crossorigin', 'anonymous');
-    // currFirstImage.src = newUrl;
-    // firstImageLoc = newUrl;
-
   });
 
   function clean_canvas(){
@@ -413,30 +393,6 @@ function renderFirstCropSquare() {
     firstCanvasCtx.closePath()
     firstCanvasCtx.stroke();
   }
-
-  
-
-
-  
-
-  // firstCanvasCtx.beginPath();
-  // firstCanvasCtx.lineWidth = "6";
-  // firstCanvasCtx.strokeStyle = "red";
-  // firstCanvasCtx.rect(0, 0, firstImageCanvas.width, firstImageCanvas.height);
-  // firstCanvasCtx.stroke();
-
-  // // firstCanvasCtx.drawImage(image, 150, 200, 500, 300, 60,60, 500, 300);
-  // // firstImage.width = 256;
-  // // firstImage.height = 256;
-  // firstImage.left = 0;
-  // firstImage.width = 256;
-  // firstImage.top = 0;
-  // firstImage.height = 256;
-  // console.log(firstImage);
-
-  // // firstCanvasCtx.drawImage(firstImage, 0, 0, 100, 100, 0, 0, firstImage.width, firstImage.height);
-  // console.log("Here");
-  // // firstCanvasCtx.drawImage(firstImage, 150, 200, 500, 300, 60,60, 500, 300);
 
 }
 
@@ -577,5 +533,3 @@ fourthImageBlurInput.addEventListener("change", () =>
 fourthImageInversionInput.addEventListener("change", () =>
   updateFourthImageSetting("inversion", fourthImageInversionInput.value)
 );
-
-// Refer to: https://stackoverflow.com/questions/45449177/dragging-a-circle-on-a-canvas-using-mousedown
