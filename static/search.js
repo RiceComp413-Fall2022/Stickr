@@ -369,8 +369,6 @@ function renderFirstCropSquare() {
 
 
     // firstCanvasCtx.clearRect(0, 0, firstImageCanvas.width, firstImageCanvas.height);
-    
-
 
     // firstCanvasCtx.fillStyle = "rgba(0, 0, 0, 0)";
     // firstCanvasCtx.fillRect(0, 0, firstCanvasCtx.width, firstCanvasCtx.height); 
@@ -383,7 +381,7 @@ function renderFirstCropSquare() {
 
     clean_canvas();
 
-    // renderFirstImage(node1.x, node1.y, node2.x-node1.x, node3.y-node1.y);
+    renderFirstImage(node1.x, node1.y, node2.x-node1.x, node3.y-node1.y);
 
     width = node2.x-node1.x
     height = node3.y-node1.y
@@ -396,6 +394,8 @@ function renderFirstCropSquare() {
     firstCanvasCtx.drawImage(firstImage, node1.x, node1.y, firstImageCanvas.width, firstImageCanvas.height, 0, 0, firstImageCanvas.width, firstImageCanvas.height);
 
     firstImage.setAttribute('crossorigin', 'anonymous');
+
+    saveFirstImage();
 
 
 
