@@ -145,7 +145,8 @@ function renderFirstImage(sx = 0, sy = 0, width, height) {
   firstImageCanvas.height = height||firstImage.height;
 
   firstCanvasCtx.filter = generateFirstImageFilter();
-  firstCanvasCtx.drawImage(firstImage, sx, sy, firstImageCanvas.width, firstImageCanvas.height, 0, 0, firstImageCanvas.width, firstImageCanvas.height);
+  firstCanvasCtx.drawImage(firstImage, 0, 0);
+  // firstCanvasCtx.drawImage(firstImage, sx, sy, firstImageCanvas.width, firstImageCanvas.height, 0, 0, firstImageCanvas.width, firstImageCanvas.height);
 
   firstImage.setAttribute('crossorigin', 'anonymous');
 }
@@ -360,52 +361,42 @@ function renderFirstCropSquare() {
 
   updateFrame();
 
-  firstImageSaveBtn.addEventListener('click', event => {
+  firstImageSaveBtn.removeEventListener('click', saveFirstImage);
+
+  function saveFirstCroppedImage(event){
 
     cancelAnimationFrame(myReq);
-
-    clean_canvas();
-    renderFirstImage();
-
-    clean_canvas();
-
-    renderFirstImage(node1.x, node1.y, node2.x-node1.x, node3.y-node1.y);
 
     width = node2.x-node1.x
     height = node3.y-node1.y
 
     firstImage.src = firstImageLoc;
-    firstImageCanvas.width = width||firstImage.width;
-    firstImageCanvas.height = height||firstImage.height;
+    firstImageCanvas.width = firstImage.width;
+    firstImageCanvas.height = firstImage.height;
 
     firstCanvasCtx.filter = generateFirstImageFilter();
-    firstCanvasCtx.drawImage(firstImage, node1.x, node1.y, firstImageCanvas.width, firstImageCanvas.height, 0, 0, firstImageCanvas.width, firstImageCanvas.height);
+    firstCanvasCtx.drawImage(firstImage, node1.x, node1.y, width, height, 0, 0, firstImage.width, firstImage.height);
 
     firstImage.setAttribute('crossorigin', 'anonymous');
 
     saveFirstImage();
-  });
 
-  function clean_canvas(){
-    firstCanvasCtx.beginPath();
-    firstCanvasCtx.fillStyle = "rgba(0, 0, 0, 255)";
-    firstCanvasCtx.fillRect(0, 0, firstImageCanvas.width, firstImageCanvas.height);    
-    firstCanvasCtx.closePath()
-    firstCanvasCtx.stroke();
+    firstImageSaveBtn.removeEventListener('click', saveFirstCroppedImage);
+    firstImageSaveBtn.addEventListener('click', saveFirstImage);
+    
+    return
   }
 
+  firstImageSaveBtn.addEventListener('click', saveFirstCroppedImage);
+
+  return
 }
 
-function saveFirstImage() {
+function saveFirstImage(event) {
   let newUrl = firstImageCanvas.toDataURL();
   currFirstImage.setAttribute('crossorigin', 'anonymous');
   currFirstImage.src = newUrl;
   firstImageLoc = newUrl;
-}
-
-function finalCropFirstImage(sx, sy, width, height) {
-
-
 }
 
 function saveSecondImage() {
@@ -429,9 +420,7 @@ function saveFourthImage() {
   fourthImageLoc = newUrl;
 }
 
-firstImageSaveBtn.addEventListener('click', event => {
-  saveFirstImage();
-});
+firstImageSaveBtn.addEventListener('click', saveFirstImage);
 
 secondImageSaveBtn.addEventListener('click', event => {
   saveSecondImage();
