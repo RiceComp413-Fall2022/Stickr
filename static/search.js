@@ -47,147 +47,41 @@ const secondImageSettings = {};
 const thirdImageSettings = {};
 const fourthImageSettings = {};
 
-function resetFirstImageSettings() {
-  firstImageSettings.brightness = "100";
-  firstImageSettings.saturation = "100";
-  firstImageSettings.blur = "0";
-  firstImageSettings.inversion = "0";
+function resetImageSettings(settings, brightnessInput, saturationInput, blurInput, inversionInput) {
+  settings.brightness = "100";
+  settings.saturation = "100";
+  settings.blur = "0";
+  settings.inversion = "0";
 
-  firstImageBrightnessInput.value = firstImageSettings.brightness;
-  firstImageSaturationInput.value = firstImageSettings.saturation;
-  firstImageBlurInput.value = firstImageSettings.blur;
-  firstImageInversionInput.value = firstImageSettings.inversion;
+  brightnessInput.value = settings.brightness;
+  saturationInput.value = settings.saturation;
+  blurInput.value = settings.blur;
+  inversionInput.value = settings.inversion;
 }
 
-function resetSecondImageSettings() {
-  secondImageSettings.brightness = "100";
-  secondImageSettings.saturation = "100";
-  secondImageSettings.blur = "0";
-  secondImageSettings.inversion = "0";
-
-  secondImageBrightnessInput.value = secondImageSettings.brightness;
-  secondImageSaturationInput.value = secondImageSettings.saturation;
-  secondImageBlurInput.value = secondImageSettings.blur;
-  secondImageInversionInput.value = secondImageSettings.inversion;
+function updateImageSetting(settings, key, value, image, canvas, imageLoc, canvasCtx) {
+  settings[key] = value;
+  renderImage(image, canvas, imageLoc, settings, canvasCtx);
 }
 
-function resetThirdImageSettings() {
-  thirdImageSettings.brightness = "100";
-  thirdImageSettings.saturation = "100";
-  thirdImageSettings.blur = "0";
-  thirdImageSettings.inversion = "0";
-
-  thirdImageBrightnessInput.value = thirdImageSettings.brightness;
-  thirdImageSaturationInput.value = thirdImageSettings.saturation;
-  thirdImageBlurInput.value = thirdImageSettings.blur;
-  thirdImageInversionInput.value = thirdImageSettings.inversion;
-}
-
-function resetFourthImageSettings() {
-  fourthImageSettings.brightness = "100";
-  fourthImageSettings.saturation = "100";
-  fourthImageSettings.blur = "0";
-  fourthImageSettings.inversion = "0";
-
-  fourthImageBrightnessInput.value = fourthImageSettings.brightness;
-  fourthImageSaturationInput.value = fourthImageSettings.saturation;
-  fourthImageBlurInput.value = fourthImageSettings.blur;
-  fourthImageInversionInput.value = fourthImageSettings.inversion;
-}
-
-function updateFirstImageSetting(key, value) {
-  firstImageSettings[key] = value;
-  renderFirstImage();
-}
-
-function updateSecondImageSetting(key, value) {
-  secondImageSettings[key] = value;
-  renderSecondImage();
-}
-
-function updateThirdImageSetting(key, value) {
-  thirdImageSettings[key] = value;
-  renderThirdImage();
-}
-
-function updateFourthImageSetting(key, value) {
-  fourthImageSettings[key] = value;
-  renderFourthImage();
-}
-
-function generateFirstImageFilter() {
-  const {brightness, saturation, blur, inversion} = firstImageSettings;
+function generateImageFilter(settings) {
+  const {brightness, saturation, blur, inversion} = settings;
 
   return `brightness(${brightness}%) saturate(${saturation}%) blur(${blur}px) invert(${inversion}%)`;
 }
 
-function generateSecondImageFilter() {
-  const {brightness, saturation, blur, inversion} = secondImageSettings;
+function renderImage(image, imageCanvas, imageLoc, settings, canvasCtx, sx = 0, sy = 0, width, height) {
+  image.src = imageLoc;
+  imageCanvas.width = width||image.width;
+  imageCanvas.height = height||image.height;
 
-  return `brightness(${brightness}%) saturate(${saturation}%) blur(${blur}px) invert(${inversion}%)`;
-}
+  canvasCtx.filter = generateImageFilter(settings);
+  canvasCtx.drawImage(image, sx, sy, imageCanvas.width, imageCanvas.height, 0, 0, imageCanvas.width, imageCanvas.height);
 
-function generateThirdImageFilter() {
-  const {brightness, saturation, blur, inversion} = thirdImageSettings;
-
-  return `brightness(${brightness}%) saturate(${saturation}%) blur(${blur}px) invert(${inversion}%)`;
-}
-
-function generateFourthImageFilter() {
-  const {brightness, saturation, blur, inversion} = fourthImageSettings;
-
-  return `brightness(${brightness}%) saturate(${saturation}%) blur(${blur}px) invert(${inversion}%)`;
-}
-
-function renderFirstImage(sx = 0, sy = 0, width, height) {
-  firstImage.src = firstImageLoc;
-  firstImageCanvas.width = width||firstImage.width;
-  firstImageCanvas.height = height||firstImage.height;
-
-  firstCanvasCtx.filter = generateFirstImageFilter();
-  firstCanvasCtx.drawImage(firstImage, sx, sy, firstImageCanvas.width, firstImageCanvas.height, 0, 0, firstImageCanvas.width, firstImageCanvas.height);
-
-  firstImage.setAttribute('crossorigin', 'anonymous');
-}
-
-function renderSecondImage() {
-  secondImage.src = secondImageLoc;
-  secondImageCanvas.width = secondImage.width;
-  secondImageCanvas.height = secondImage.height;
-
-  secondCanvasCtx.filter = generateSecondImageFilter();
-  secondCanvasCtx.drawImage(secondImage, 0, 0);
-
-  secondImage.setAttribute('crossorigin', 'anonymous');
-}
-
-function renderThirdImage() {
-  thirdImage.src = thirdImageLoc;
-  thirdImageCanvas.width = thirdImage.width;
-  thirdImageCanvas.height = thirdImage.height;
-
-  thirdCanvasCtx.filter = generateThirdImageFilter();
-  thirdCanvasCtx.drawImage(thirdImage, 0, 0);
-
-  thirdImage.setAttribute('crossorigin', 'anonymous');
-}
-
-function renderFourthImage() {
-  fourthImage.src = fourthImageLoc;
-  fourthImageCanvas.width = fourthImage.width;
-  fourthImageCanvas.height = fourthImage.height;
-
-  fourthCanvasCtx.filter = generateFourthImageFilter();
-  fourthCanvasCtx.drawImage(fourthImage, 0, 0);
-
-  fourthImage.setAttribute('crossorigin', 'anonymous');
+  image.setAttribute('crossorigin', 'anonymous');
 }
 
 function draw(c, nodes, boundary) {
-  //draw in the container
-  // c.fillStyle = "#000000";
-  // c.fillRect(container.y, container.x, container.width, container.height);
-  // renderFirstImage();
 
   //draw nodes
   for (var i in nodes) {
@@ -351,7 +245,7 @@ function renderFirstCropSquare() {
 
   function updateFrame() {
     firstCanvasCtx.save();
-    renderFirstImage();
+    renderImage(firstImage, firstImageCanvas, firstImageLoc, firstImageSettings, firstCanvasCtx);
     draw(firstCanvasCtx, [node1, node2, node3, node4], boundingBox);
     firstCanvasCtx.restore();
 
@@ -365,11 +259,11 @@ function renderFirstCropSquare() {
     cancelAnimationFrame(myReq);
 
     clean_canvas();
-    renderFirstImage();
+    renderImage(firstImage, firstImageCanvas, firstImageLoc, firstImageSettings, firstCanvasCtx);
 
     clean_canvas();
 
-    renderFirstImage(node1.x, node1.y, node2.x-node1.x, node3.y-node1.y);
+    renderImage(firstImage, firstImageCanvas, firstImageLoc, firstImageSettings, firstCanvasCtx);
 
     let width = node2.x-node1.x
     let height = node3.y-node1.y
@@ -378,12 +272,12 @@ function renderFirstCropSquare() {
     firstImageCanvas.width = width||firstImage.width;
     firstImageCanvas.height = height||firstImage.height;
 
-    firstCanvasCtx.filter = generateFirstImageFilter();
+    firstCanvasCtx.filter = generateImageFilter(firstImageSettings);
     firstCanvasCtx.drawImage(firstImage, node1.x, node1.y, firstImageCanvas.width, firstImageCanvas.height, 0, 0, firstImageCanvas.width, firstImageCanvas.height);
 
     firstImage.setAttribute('crossorigin', 'anonymous');
 
-    saveFirstImage();
+    saveImage(firstImageCanvas, currFirstImage, firstImageLoc);
   });
 
   function clean_canvas(){
@@ -396,11 +290,11 @@ function renderFirstCropSquare() {
 
 }
 
-function saveFirstImage() {
-  let newUrl = firstImageCanvas.toDataURL();
-  currFirstImage.setAttribute('crossorigin', 'anonymous');
-  currFirstImage.src = newUrl;
-  firstImageLoc = newUrl;
+function saveImage(imageCanvas, currImage, imageLoc) {
+  let newUrl = imageCanvas.toDataURL();
+  currImage.setAttribute('crossorigin', 'anonymous');
+  currImage.src = newUrl;
+  imageLoc = newUrl;
 }
 
 function finalCropFirstImage(sx, sy, width, height) {
@@ -408,61 +302,40 @@ function finalCropFirstImage(sx, sy, width, height) {
 
 }
 
-function saveSecondImage() {
-  let newUrl = secondImageCanvas.toDataURL();
-  currSecondImage.setAttribute('crossorigin', 'anonymous');
-  currSecondImage.src = newUrl;
-  secondImageLoc = newUrl;
-}
-
-function saveThirdImage() {
-  let newUrl = thirdImageCanvas.toDataURL();
-  currThirdImage.setAttribute('crossorigin', 'anonymous');
-  currThirdImage.src = newUrl;
-  thirdImageLoc = newUrl;
-}
-
-function saveFourthImage() {
-  let newUrl = fourthImageCanvas.toDataURL();
-  currFourthImage.setAttribute('crossorigin', 'anonymous');
-  currFourthImage.src = newUrl;
-  fourthImageLoc = newUrl;
-}
-
 firstImageSaveBtn.addEventListener('click', event => {
-  saveFirstImage();
+  saveImage(firstImageCanvas, currFirstImage, firstImageLoc);
 });
 
 secondImageSaveBtn.addEventListener('click', event => {
-  saveSecondImage();
+  saveImage(secondImageCanvas, currSecondImage, secondImageLoc);
 });
 
 thirdImageSaveBtn.addEventListener('click', event => {
-  saveThirdImage();
+  saveImage(thirdImageCanvas, currThirdImage, thirdImageLoc);
 });
 
 fourthImageSaveBtn.addEventListener('click', event => {
-  saveFourthImage();
+  saveImage(fourthImageCanvas, currFourthImage, fourthImageLoc);
 });
 
 firstImageModalBtn.addEventListener('click', event => {
-  renderFirstImage();
-  resetFirstImageSettings();
+  renderImage(firstImage, firstImageCanvas, firstImageLoc, firstImageSettings, firstCanvasCtx);
+  resetImageSettings(firstImageSettings, firstImageBrightnessInput, firstImageSaturationInput, firstImageBlurInput, firstImageInversionInput);
 });
 
 secondImageModalBtn.addEventListener('click', event => {
-  renderSecondImage();
-  resetSecondImageSettings();
+  renderImage(secondImage, secondImageCanvas, secondImageLoc, secondImageSettings, secondCanvasCtx);
+  resetImageSettings(secondImageSettings, secondImageBrightnessInput, secondImageSaturationInput, secondImageBlurInput, secondImageInversionInput);
 });
 
 thirdImageModalBtn.addEventListener('click', event => {
-  renderThirdImage();
-  resetThirdImageSettings();
+  renderImage(thirdImage, thirdImageCanvas, thirdImageLoc, thirdImageSettings, thirdCanvasCtx);
+  resetImageSettings(thirdImageSettings, thirdImageBrightnessInput, thirdImageSaturationInput, thirdImageBlurInput, thirdImageInversionInput);
 });
 
 fourthImageModalBtn.addEventListener('click', event => {
-  renderFourthImage();
-  resetFourthImageSettings();
+  renderImage(fourthImage, fourthImageCanvas, fourthImageLoc, fourthImageSettings, fourthCanvasCtx);
+  resetImageSettings(fourthImageSettings, fourthImageBrightnessInput, fourthImageSaturationInput, fourthImageBlurInput, fourthImageInversionInput);
 });
 
 firstImageCropBtn.addEventListener('click', event => {
@@ -471,65 +344,65 @@ firstImageCropBtn.addEventListener('click', event => {
 
 
 firstImageBrightnessInput.addEventListener("change", () =>
-  updateFirstImageSetting("brightness", firstImageBrightnessInput.value)
+  updateImageSetting(firstImageSettings, "brightness", firstImageBrightnessInput.value, firstImage, firstImageCanvas, firstImageLoc, firstCanvasCtx)
 );
 
 firstImageSaturationInput.addEventListener("change", () =>
-  updateFirstImageSetting("saturation", firstImageSaturationInput.value)
+  updateImageSetting(firstImageSettings, "saturation", firstImageSaturationInput.value, firstImage, firstImageCanvas, firstImageLoc, firstCanvasCtx)
 );
 
 firstImageBlurInput.addEventListener("change", () =>
-  updateFirstImageSetting("blur", firstImageBlurInput.value)
+  updateImageSetting(firstImageSettings, "blur", firstImageBlurInput.value, firstImage, firstImageCanvas, firstImageLoc, firstCanvasCtx)
 );
 
 firstImageInversionInput.addEventListener("change", () =>
-  updateFirstImageSetting("inversion", firstImageInversionInput.value)
+  updateImageSetting(firstImageSettings, "inversion", firstImageInversionInput.value, firstImage, firstImageCanvas, firstImageLoc, firstCanvasCtx)
 );
 
 secondImageBrightnessInput.addEventListener("change", () =>
-  updateSecondImageSetting("brightness", secondImageBrightnessInput.value)
+  updateImageSetting(secondImageSettings, "brightness", secondImageBrightnessInput.value, secondImage, secondImageCanvas, secondImageLoc, secondCanvasCtx)
 );
 
 secondImageSaturationInput.addEventListener("change", () =>
-  updateSecondImageSetting("saturation", secondImageSaturationInput.value)
+  updateImageSetting(secondImageSettings, "saturation", secondImageSaturationInput.value, secondImage, secondImageCanvas, secondImageLoc, secondCanvasCtx)
 );
 
 secondImageBlurInput.addEventListener("change", () =>
-  updateSecondImageSetting("blur", secondImageBlurInput.value)
+  updateImageSetting(secondImageSettings, "blur", secondImageBlurInput.value, secondImage, secondImageCanvas, secondImageLoc, secondCanvasCtx)
 );
 
 secondImageInversionInput.addEventListener("change", () =>
-  updateSecondImageSetting("inversion", secondImageInversionInput.value)
+  updateImageSetting(secondImageSettings, "inversion", secondImageInversionInput.value, secondImage, secondImageCanvas, secondImageLoc, secondCanvasCtx)
 );
 
 thirdImageBrightnessInput.addEventListener("change", () =>
-  updateThirdImageSetting("brightness", thirdImageBrightnessInput.value)
+  updateImageSetting(thirdImageSettings, "brightness", thirdImageBrightnessInput.value, thirdImage, thirdImageCanvas, thirdImageLoc, thirdCanvasCtx)
 );
 
 thirdImageSaturationInput.addEventListener("change", () =>
-  updateThirdImageSetting("saturation", thirdImageSaturationInput.value)
+  updateImageSetting(thirdImageSettings, "saturation", thirdImageSaturationInput.value, thirdImage, thirdImageCanvas, thirdImageLoc, thirdCanvasCtx)
 );
 
 thirdImageBlurInput.addEventListener("change", () =>
-  updateThirdImageSetting("blur", thirdImageBlurInput.value)
+  updateImageSetting(thirdImageSettings, "blur", thirdImageBlurInput.value, thirdImage, thirdImageCanvas, thirdImageLoc, thirdCanvasCtx)
 );
 
 thirdImageInversionInput.addEventListener("change", () =>
-  updateThirdImageSetting("inversion", thirdImageInversionInput.value)
+  updateImageSetting(thirdImageSettings, "inversion", thirdImageInversionInput.value, thirdImage, thirdImageCanvas, thirdImageLoc, thirdCanvasCtx)
 );
 
 fourthImageBrightnessInput.addEventListener("change", () =>
-  updateFourthImageSetting("brightness", fourthImageBrightnessInput.value)
+  updateImageSetting(fourthImageSettings, "brightness", fourthImageBrightnessInput.value, fourthImage, fourthImageCanvas, fourthImageLoc, fourthCanvasCtx)
 );
 
 fourthImageSaturationInput.addEventListener("change", () =>
-  updateFourthImageSetting("saturation", fourthImageSaturationInput.value)
+  updateImageSetting(fourthImageSettings, "saturation", fourthImageSaturationInput.value, fourthImage, fourthImageCanvas, fourthImageLoc, fourthCanvasCtx)
 );
 
 fourthImageBlurInput.addEventListener("change", () =>
-  updateFourthImageSetting("blur", fourthImageBlurInput.value)
+  updateImageSetting(fourthImageSettings, "blur", fourthImageBlurInput.value, fourthImage, fourthImageCanvas, fourthImageLoc, fourthCanvasCtx)
 );
 
 fourthImageInversionInput.addEventListener("change", () =>
-  updateFourthImageSetting("inversion", fourthImageInversionInput.value)
-);
+  updateImageSetting(fourthImageSettings, "inversion", fourthImageInversionInput.value, fourthImage, fourthImageCanvas, fourthImageLoc, fourthCanvasCtx)
+);  
