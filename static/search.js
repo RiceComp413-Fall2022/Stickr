@@ -139,13 +139,13 @@ function generateFourthImageFilter() {
   return `brightness(${brightness}%) saturate(${saturation}%) blur(${blur}px) invert(${inversion}%)`;
 }
 
-function renderFirstImage(sx = 0, sy = 0, dx = 0, dy = 0) {
+function renderFirstImage(sx = 0, sy = 0, width, height) {
   firstImage.src = firstImageLoc;
-  firstImageCanvas.width = firstImage.width;
-  firstImageCanvas.height = firstImage.height;
+  firstImageCanvas.width = width||firstImage.width;
+  firstImageCanvas.height = height||firstImage.height;
 
   firstCanvasCtx.filter = generateFirstImageFilter();
-  firstCanvasCtx.drawImage(firstImage, sx, sy, firstImage.width, firstImage.height, dx, dy, firstImage.width, firstImage.height);
+  firstCanvasCtx.drawImage(firstImage, sx, sy, firstImageCanvas.width, firstImageCanvas.height, 0, 0, firstImageCanvas.width, firstImageCanvas.height);
 
   firstImage.setAttribute('crossorigin', 'anonymous');
 }
@@ -285,13 +285,6 @@ function handleMouseDrag(canvas, nodes) {
         offset = { x: dragNode.x, y: dragNode.y, x0: x, y0: y };
         return;
       }
-      else if (i == 1){
-        // console.log(x);
-        // console.log(nodes[i].x);
-        // console.log(y);
-        // console.log(nodes[i].y);
-        
-      }
     }
   });
   canvas.addEventListener("mousemove", function (e) {
@@ -338,7 +331,7 @@ function handleMouseDrag(canvas, nodes) {
 }
 
 function renderFirstCropSquare() {
-
+  
   node_radius = 15
   x_1 = 0
   x_2 = firstImageCanvas.width;
@@ -346,11 +339,6 @@ function renderFirstCropSquare() {
   y_2 = firstImageCanvas.height;
 
   var node1 = new Node(x_1, y_1, node_radius);
-  // var node1 = new Node(100, 100, node_radius);
-  // var node2 = new Node(200, 100);
-  // var node3 = new Node(200, 200);
-  // var node4 = new Node(100, 200);
-
   var node2 = new Node(x_2, y_1, node_radius);
   var node3 = new Node(x_2, y_2, node_radius);
   var node4 = new Node(x_1, y_2, node_radius);
@@ -359,14 +347,77 @@ function renderFirstCropSquare() {
   
   handleMouseDrag(firstImageCanvas, [node1, node2, node3, node4]);
 
+  let myReq;
+
   function updateFrame() {
     firstCanvasCtx.save();
     renderFirstImage();
+    // renderFirstImage(node1.x, node1.y, node2.x-node1.x, node3.y-node1.y);
     draw(firstCanvasCtx, [node1, node2, node3, node4], boundingBox);
     firstCanvasCtx.restore();
-    requestAnimationFrame(updateFrame)
+
+    myReq = requestAnimationFrame(updateFrame);
   };
+
   updateFrame();
+
+  firstImageSaveBtn.addEventListener('click', event => {
+
+    cancelAnimationFrame(myReq);
+
+    clean_canvas();
+
+
+    // firstCanvasCtx.clearRect(0, 0, firstImageCanvas.width, firstImageCanvas.height);
+    
+
+
+    // firstCanvasCtx.fillStyle = "rgba(0, 0, 0, 0)";
+    // firstCanvasCtx.fillRect(0, 0, firstCanvasCtx.width, firstCanvasCtx.height); 
+    // firstCanvasCtx.restore();
+
+    renderFirstImage();
+
+    window.alert(myReq);
+
+
+    clean_canvas();
+
+    // renderFirstImage(node1.x, node1.y, node2.x-node1.x, node3.y-node1.y);
+
+    width = node2.x-node1.x
+    height = node3.y-node1.y
+
+    firstImage.src = firstImageLoc;
+    firstImageCanvas.width = width||firstImage.width;
+    firstImageCanvas.height = height||firstImage.height;
+
+    firstCanvasCtx.filter = generateFirstImageFilter();
+    firstCanvasCtx.drawImage(firstImage, node1.x, node1.y, firstImageCanvas.width, firstImageCanvas.height, 0, 0, firstImageCanvas.width, firstImageCanvas.height);
+
+    firstImage.setAttribute('crossorigin', 'anonymous');
+
+
+
+    // let newUrl = firstImageCanvas.toDataURL();
+    // currFirstImage.setAttribute('crossorigin', 'anonymous');
+    // currFirstImage.src = newUrl;
+    // firstImageLoc = newUrl;
+
+  });
+
+  function clean_canvas(){
+    firstCanvasCtx.beginPath();
+    firstCanvasCtx.fillStyle = "rgba(0, 0, 0, 255)";
+    firstCanvasCtx.fillRect(0, 0, firstImageCanvas.width, firstImageCanvas.height);    
+    firstCanvasCtx.closePath()
+    firstCanvasCtx.stroke();
+  }
+
+  
+
+
+  
 
   // firstCanvasCtx.beginPath();
   // firstCanvasCtx.lineWidth = "6";
@@ -394,6 +445,11 @@ function saveFirstImage() {
   currFirstImage.setAttribute('crossorigin', 'anonymous');
   currFirstImage.src = newUrl;
   firstImageLoc = newUrl;
+}
+
+function finalCropFirstImage(sx, sy, width, height) {
+
+
 }
 
 function saveSecondImage() {
