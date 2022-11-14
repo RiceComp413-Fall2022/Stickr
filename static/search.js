@@ -332,11 +332,11 @@ function handleMouseDrag(canvas, nodes) {
 
 function renderFirstCropSquare() {
   
-  node_radius = 15
-  x_1 = 0
-  x_2 = firstImageCanvas.width;
-  y_1 = 0
-  y_2 = firstImageCanvas.height;
+  const node_radius = 15
+  const x_1 = 0
+  const x_2 = firstImageCanvas.width;
+  const y_1 = 0
+  const y_2 = firstImageCanvas.height;
 
   var node1 = new Node(x_1, y_1, node_radius);
   var node2 = new Node(x_2, y_1, node_radius);
@@ -371,8 +371,8 @@ function renderFirstCropSquare() {
 
     renderFirstImage(node1.x, node1.y, node2.x-node1.x, node3.y-node1.y);
 
-    width = node2.x-node1.x
-    height = node3.y-node1.y
+    let width = node2.x-node1.x
+    let height = node3.y-node1.y
 
     firstImage.src = firstImageLoc;
     firstImageCanvas.width = width||firstImage.width;
