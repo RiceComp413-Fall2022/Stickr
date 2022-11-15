@@ -123,6 +123,21 @@ h1 {
   width: 100%;
 }
 
+#textEditFirstImage {
+  margin-bottom: 10px;
+}
+
+.tool-text-input {
+  width: 75%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.tool-submit-input {
+  width: 50%;
+  padding: 5px;
+}
+
 .image-area {
   flex-grow: 1;
   padding: 20px;
