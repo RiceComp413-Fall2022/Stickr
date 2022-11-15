@@ -352,23 +352,23 @@ function saveFourthSticker(event){
 fourthImageSaveBtn.addEventListener('click', saveFourthSticker);
 
 firstImageModalBtn.addEventListener('click', event => {
-  renderImage(firstSticker);
   resetImageSettings(firstSticker, firstImageBrightnessInput, firstImageSaturationInput, firstImageBlurInput, firstImageInversionInput);
+  renderImage(firstSticker);
 });
 
 secondImageModalBtn.addEventListener('click', event => {
-  renderImage(secondSticker);
   resetImageSettings(secondSticker, secondImageBrightnessInput, secondImageSaturationInput, secondImageBlurInput, secondImageInversionInput);
+  renderImage(secondSticker);
 });
 
 thirdImageModalBtn.addEventListener('click', event => {
-  renderImage(thirdSticker);
   resetImageSettings(thirdSticker, thirdImageBrightnessInput, thirdImageSaturationInput, thirdImageBlurInput, thirdImageInversionInput);
+  renderImage(thirdSticker);
 });
 
 fourthImageModalBtn.addEventListener('click', event => {
-  renderImage(fourthSticker);
   resetImageSettings(fourthSticker, fourthImageBrightnessInput, fourthImageSaturationInput, fourthImageBlurInput, fourthImageInversionInput);
+  renderImage(fourthSticker);
 });
 
 firstImageCropBtn.addEventListener('click', event => {
