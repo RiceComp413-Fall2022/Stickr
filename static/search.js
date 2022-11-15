@@ -45,6 +45,10 @@ let firstImageSaveBtn = document.getElementById("firstImageSave");
 let secondImageSaveBtn = document.getElementById("secondImageSave");
 let thirdImageSaveBtn = document.getElementById("thirdImageSave");
 let fourthImageSaveBtn = document.getElementById("fourthImageSave");
+let firstModalCloseBtn = document.getElementById("firstModalCloseBtn");
+let secondModalCloseBtn = document.getElementById("secondModalCloseBtn");
+let thirdModalCloseBtn = document.getElementById("thirdModalCloseBtn");
+let fourthModalCloseBtn = document.getElementById("fourthModalCloseBtn");
 const firstImageSettings = {};
 const secondImageSettings = {};
 const thirdImageSettings = {};
@@ -52,20 +56,21 @@ const fourthImageSettings = {};
 
 
 class stickerImage{
-  constructor(image, imageCanvas, canvasCtx, imageLoc, settings, currImage){
+  constructor(image, imageCanvas, canvasCtx, imageLoc, settings, currImage, modalCloseBtn){
     this.image = image;
     this.imageCanvas = imageCanvas;
     this.canvasCtx = canvasCtx;
     this.imageLoc = imageLoc;
     this.settings = settings;
-    this.currImage = currImage
+    this.currImage = currImage;
+    this.modalCloseBtn = modalCloseBtn
   }
 }
 
-let firstSticker = new stickerImage(firstImage, firstImageCanvas, firstCanvasCtx, firstImageLoc, firstImageSettings, currFirstImage);
-let secondSticker = new stickerImage(secondImage, secondImageCanvas, secondCanvasCtx, secondImageLoc, secondImageSettings, currSecondImage);
-let thirdSticker = new stickerImage(thirdImage, thirdImageCanvas, thirdCanvasCtx, thirdImageLoc, thirdImageSettings, currThirdImage);
-let fourthSticker = new stickerImage(fourthImage, fourthImageCanvas, fourthCanvasCtx, fourthImageLoc, fourthImageSettings, currFourthImage);
+let firstSticker = new stickerImage(firstImage, firstImageCanvas, firstCanvasCtx, firstImageLoc, firstImageSettings, currFirstImage, firstModalCloseBtn);
+let secondSticker = new stickerImage(secondImage, secondImageCanvas, secondCanvasCtx, secondImageLoc, secondImageSettings, currSecondImage, secondModalCloseBtn);
+let thirdSticker = new stickerImage(thirdImage, thirdImageCanvas, thirdCanvasCtx, thirdImageLoc, thirdImageSettings, currThirdImage, thirdModalCloseBtn);
+let fourthSticker = new stickerImage(fourthImage, fourthImageCanvas, fourthCanvasCtx, fourthImageLoc, fourthImageSettings, currFourthImage, fourthModalCloseBtn);
 
 function resetImageSettings(sticker, brightnessInput, saturationInput, blurInput, inversionInput) {
   sticker.settings.brightness = "100";
@@ -294,6 +299,8 @@ function renderCropSquare(sticker, saveBtn, saveFunc) {
 
     saveBtn.removeEventListener('click', saveCroppedImage);
     saveBtn.addEventListener('click', saveFunc);
+
+    sticker.modalCloseBtn.click();
     
     return
   }
@@ -315,6 +322,7 @@ function saveImage(sticker) {
 function saveFirstSticker(event){
   saveImage(firstSticker);
   firstImageLoc = firstSticker.imageLoc;
+  firstModalCloseBtn.click();
 }
 
 firstImageSaveBtn.addEventListener('click', saveFirstSticker);
@@ -322,6 +330,7 @@ firstImageSaveBtn.addEventListener('click', saveFirstSticker);
 function saveSecondSticker(event){
   saveImage(secondSticker);
   secondImageLoc = secondSticker.imageLoc;
+  secondModalCloseBtn.click();
 }
 
 secondImageSaveBtn.addEventListener('click', saveSecondSticker);
@@ -329,6 +338,7 @@ secondImageSaveBtn.addEventListener('click', saveSecondSticker);
 function saveThirdSticker(event){
   saveImage(thirdSticker);
   thirdImageLoc = thirdSticker.imageLoc;
+  thirdModalCloseBtn.click();
 }
 
 thirdImageSaveBtn.addEventListener('click', saveThirdSticker);
@@ -336,6 +346,7 @@ thirdImageSaveBtn.addEventListener('click', saveThirdSticker);
 function saveFourthSticker(event){
   saveImage(fourthSticker);
   fourthImageLoc = fourthSticker.imageLoc;
+  fourthModalCloseBtn.click();
 }
 
 fourthImageSaveBtn.addEventListener('click', saveFourthSticker);
