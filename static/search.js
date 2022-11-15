@@ -33,6 +33,9 @@ let thirdImageModalBtn = document.getElementById("openThirdImageModal");
 let fourthImageModalBtn = document.getElementById("openFourthImageModal");
 
 let firstImageCropBtn = document.getElementById("cropFirstImage");
+let secondImageCropBtn = document.getElementById("cropSecondImage");
+let thirdImageCropBtn = document.getElementById("cropThirdImage");
+let fourthImageCropBtn = document.getElementById("cropFourthImage");
 
 let currFirstImage = document.getElementById("firstImage");
 let currSecondImage = document.getElementById("secondImage");
@@ -47,38 +50,55 @@ const secondImageSettings = {};
 const thirdImageSettings = {};
 const fourthImageSettings = {};
 
-function resetImageSettings(settings, brightnessInput, saturationInput, blurInput, inversionInput) {
-  settings.brightness = "100";
-  settings.saturation = "100";
-  settings.blur = "0";
-  settings.inversion = "0";
 
-  brightnessInput.value = settings.brightness;
-  saturationInput.value = settings.saturation;
-  blurInput.value = settings.blur;
-  inversionInput.value = settings.inversion;
+class stickerImage{
+  constructor(image, imageCanvas, canvasCtx, imageLoc, settings, currImage){
+    this.image = image;
+    this.imageCanvas = imageCanvas;
+    this.canvasCtx = canvasCtx;
+    this.imageLoc = imageLoc;
+    this.settings = settings;
+    this.currImage = currImage
+  }
 }
 
-function updateImageSetting(settings, key, value, image, canvas, imageLoc, canvasCtx) {
-  settings[key] = value;
-  renderImage(image, canvas, imageLoc, settings, canvasCtx);
+let firstSticker = new stickerImage(firstImage, firstImageCanvas, firstCanvasCtx, firstImageLoc, firstImageSettings, currFirstImage);
+let secondSticker = new stickerImage(secondImage, secondImageCanvas, secondCanvasCtx, secondImageLoc, secondImageSettings, currSecondImage);
+let thirdSticker = new stickerImage(thirdImage, thirdImageCanvas, thirdCanvasCtx, thirdImageLoc, thirdImageSettings, currThirdImage);
+let fourthSticker = new stickerImage(fourthImage, fourthImageCanvas, fourthCanvasCtx, fourthImageLoc, fourthImageSettings, currFourthImage);
+
+function resetImageSettings(sticker, brightnessInput, saturationInput, blurInput, inversionInput) {
+  sticker.settings.brightness = "100";
+  sticker.settings.saturation = "100";
+  sticker.settings.blur = "0";
+  sticker.settings.inversion = "0";
+
+  brightnessInput.value = sticker.settings.brightness;
+  saturationInput.value = sticker.settings.saturation;
+  blurInput.value = sticker.settings.blur;
+  inversionInput.value = sticker.settings.inversion;
 }
 
-function generateImageFilter(settings) {
-  const {brightness, saturation, blur, inversion} = settings;
+function updateImageSetting(sticker, key, value) {
+  sticker.settings[key] = value;
+  renderImage(sticker);
+}
+
+function generateImageFilter(sticker) {
+  const {brightness, saturation, blur, inversion} = sticker.settings;
 
   return `brightness(${brightness}%) saturate(${saturation}%) blur(${blur}px) invert(${inversion}%)`;
 }
 
-function renderImage(image, imageCanvas, imageLoc, settings, canvasCtx, sx = 0, sy = 0, width, height) {
-  image.src = imageLoc;
-  imageCanvas.width = width||image.width;
-  imageCanvas.height = height||image.height;
+function renderImage(sticker, sx = 0, sy = 0, width, height) {
+  sticker.image.src = sticker.imageLoc;
+  sticker.imageCanvas.width = width||sticker.imageCanvas.width;
+  sticker.imageCanvas.height = height||sticker.imageCanvas.height;
 
-  canvasCtx.filter = generateImageFilter(settings);
-  canvasCtx.drawImage(image, sx, sy, imageCanvas.width, imageCanvas.height, 0, 0, imageCanvas.width, imageCanvas.height);
+  sticker.canvasCtx.filter = generateImageFilter(sticker);
+  sticker.canvasCtx.drawImage(sticker.image, sx, sy, sticker.imageCanvas.width, sticker.imageCanvas.height, 0, 0, sticker.imageCanvas.width, sticker.imageCanvas.height);
 
-  image.setAttribute('crossorigin', 'anonymous');
+  sticker.image.setAttribute('crossorigin', 'anonymous');
 }
 
 function draw(c, nodes, boundary) {
@@ -224,13 +244,13 @@ function handleMouseDrag(canvas, nodes) {
   });
 }
 
-function renderFirstCropSquare() {
+function renderCropSquare(sticker, saveBtn, saveFunc) {
   
   const node_radius = 15
   const x_1 = 0
-  const x_2 = firstImageCanvas.width;
+  const x_2 = sticker.imageCanvas.width;
   const y_1 = 0
-  const y_2 = firstImageCanvas.height;
+  const y_2 = sticker.imageCanvas.height;
 
   var node1 = new Node(x_1, y_1, node_radius);
   var node2 = new Node(x_2, y_1, node_radius);
@@ -239,170 +259,183 @@ function renderFirstCropSquare() {
 
   var boundingBox = new Box(node1, node2, node3, node4);
   
-  handleMouseDrag(firstImageCanvas, [node1, node2, node3, node4]);
+  handleMouseDrag(sticker.imageCanvas, [node1, node2, node3, node4]);
 
   let myReq;
 
   function updateFrame() {
-    firstCanvasCtx.save();
-    renderImage(firstImage, firstImageCanvas, firstImageLoc, firstImageSettings, firstCanvasCtx);
-    draw(firstCanvasCtx, [node1, node2, node3, node4], boundingBox);
-    firstCanvasCtx.restore();
+    sticker.canvasCtx.save();
+    renderImage(sticker);
+    draw(sticker.canvasCtx, [node1, node2, node3, node4], boundingBox);
+    sticker.canvasCtx.restore();
 
     myReq = requestAnimationFrame(updateFrame);
   };
 
   updateFrame();
 
-  firstImageSaveBtn.addEventListener('click', event => {
+  saveBtn.removeEventListener('click', saveFunc);
+
+  function saveCroppedImage(event){
 
     cancelAnimationFrame(myReq);
 
-    clean_canvas();
-    renderImage(firstImage, firstImageCanvas, firstImageLoc, firstImageSettings, firstCanvasCtx);
+    const width = node2.x-node1.x
+    const height = node3.y-node1.y
 
-    clean_canvas();
+    sticker.image.src = sticker.imageLoc;
 
-    renderImage(firstImage, firstImageCanvas, firstImageLoc, firstImageSettings, firstCanvasCtx);
+    sticker.canvasCtx.filter = generateImageFilter(sticker);
+    sticker.canvasCtx.drawImage(sticker.image, node1.x, node1.y, width, height, 0, 0, sticker.imageCanvas.width, sticker.imageCanvas.height);
 
-    let width = node2.x-node1.x
-    let height = node3.y-node1.y
+    sticker.image.setAttribute('crossorigin', 'anonymous');
 
-    firstImage.src = firstImageLoc;
-    firstImageCanvas.width = width||firstImage.width;
-    firstImageCanvas.height = height||firstImage.height;
+    saveImage(sticker);
 
-    firstCanvasCtx.filter = generateImageFilter(firstImageSettings);
-    firstCanvasCtx.drawImage(firstImage, node1.x, node1.y, firstImageCanvas.width, firstImageCanvas.height, 0, 0, firstImageCanvas.width, firstImageCanvas.height);
-
-    firstImage.setAttribute('crossorigin', 'anonymous');
-
-    saveImage(firstImageCanvas, currFirstImage, firstImageLoc);
-  });
-
-  function clean_canvas(){
-    firstCanvasCtx.beginPath();
-    firstCanvasCtx.fillStyle = "rgba(0, 0, 0, 255)";
-    firstCanvasCtx.fillRect(0, 0, firstImageCanvas.width, firstImageCanvas.height);    
-    firstCanvasCtx.closePath()
-    firstCanvasCtx.stroke();
+    saveBtn.removeEventListener('click', saveCroppedImage);
+    saveBtn.addEventListener('click', saveFunc);
+    
+    return
   }
 
+  saveBtn.addEventListener('click', saveCroppedImage);
+
+  return
 }
 
-function saveImage(imageCanvas, currImage, imageLoc) {
-  let newUrl = imageCanvas.toDataURL();
-  currImage.setAttribute('crossorigin', 'anonymous');
-  currImage.src = newUrl;
-  imageLoc = newUrl;
-}
-
-function finalCropFirstImage(sx, sy, width, height) {
-
+function saveImage(sticker) {
+  let newUrl = sticker.imageCanvas.toDataURL();
+  sticker.currImage.setAttribute('crossorigin', 'anonymous');
+  sticker.currImage.src = newUrl;
+  sticker.imageLoc = newUrl;
 
 }
 
-firstImageSaveBtn.addEventListener('click', event => {
-  saveImage(firstImageCanvas, currFirstImage, firstImageLoc);
-});
 
-secondImageSaveBtn.addEventListener('click', event => {
-  saveImage(secondImageCanvas, currSecondImage, secondImageLoc);
-});
+function saveFirstSticker(event){
+  saveImage(firstSticker);
+  firstImageLoc = firstSticker.imageLoc;
+}
 
-thirdImageSaveBtn.addEventListener('click', event => {
-  saveImage(thirdImageCanvas, currThirdImage, thirdImageLoc);
-});
+firstImageSaveBtn.addEventListener('click', saveFirstSticker);
 
-fourthImageSaveBtn.addEventListener('click', event => {
-  saveImage(fourthImageCanvas, currFourthImage, fourthImageLoc);
-});
+function saveSecondSticker(event){
+  saveImage(secondSticker);
+  secondImageLoc = secondSticker.imageLoc;
+}
+
+secondImageSaveBtn.addEventListener('click', saveSecondSticker);
+
+function saveThirdSticker(event){
+  saveImage(thirdSticker);
+  thirdImageLoc = thirdSticker.imageLoc;
+}
+
+thirdImageSaveBtn.addEventListener('click', saveThirdSticker);
+
+function saveFourthSticker(event){
+  saveImage(fourthSticker);
+  fourthImageLoc = fourthSticker.imageLoc;
+}
+
+fourthImageSaveBtn.addEventListener('click', saveFourthSticker);
 
 firstImageModalBtn.addEventListener('click', event => {
-  renderImage(firstImage, firstImageCanvas, firstImageLoc, firstImageSettings, firstCanvasCtx);
-  resetImageSettings(firstImageSettings, firstImageBrightnessInput, firstImageSaturationInput, firstImageBlurInput, firstImageInversionInput);
+  renderImage(firstSticker);
+  resetImageSettings(firstSticker, firstImageBrightnessInput, firstImageSaturationInput, firstImageBlurInput, firstImageInversionInput);
 });
 
 secondImageModalBtn.addEventListener('click', event => {
-  renderImage(secondImage, secondImageCanvas, secondImageLoc, secondImageSettings, secondCanvasCtx);
-  resetImageSettings(secondImageSettings, secondImageBrightnessInput, secondImageSaturationInput, secondImageBlurInput, secondImageInversionInput);
+  renderImage(secondSticker);
+  resetImageSettings(secondSticker, secondImageBrightnessInput, secondImageSaturationInput, secondImageBlurInput, secondImageInversionInput);
 });
 
 thirdImageModalBtn.addEventListener('click', event => {
-  renderImage(thirdImage, thirdImageCanvas, thirdImageLoc, thirdImageSettings, thirdCanvasCtx);
-  resetImageSettings(thirdImageSettings, thirdImageBrightnessInput, thirdImageSaturationInput, thirdImageBlurInput, thirdImageInversionInput);
+  renderImage(thirdSticker);
+  resetImageSettings(thirdSticker, thirdImageBrightnessInput, thirdImageSaturationInput, thirdImageBlurInput, thirdImageInversionInput);
 });
 
 fourthImageModalBtn.addEventListener('click', event => {
-  renderImage(fourthImage, fourthImageCanvas, fourthImageLoc, fourthImageSettings, fourthCanvasCtx);
-  resetImageSettings(fourthImageSettings, fourthImageBrightnessInput, fourthImageSaturationInput, fourthImageBlurInput, fourthImageInversionInput);
+  renderImage(fourthSticker);
+  resetImageSettings(fourthSticker, fourthImageBrightnessInput, fourthImageSaturationInput, fourthImageBlurInput, fourthImageInversionInput);
 });
 
 firstImageCropBtn.addEventListener('click', event => {
-  renderFirstCropSquare();
+  renderCropSquare(firstSticker, firstImageSaveBtn, saveFirstSticker);
 });
 
+secondImageCropBtn.addEventListener('click', event => {
+  renderCropSquare(secondSticker, secondImageSaveBtn, saveSecondSticker);
+});
+
+thirdImageCropBtn.addEventListener('click', event => {
+  renderCropSquare(thirdSticker, thirdImageSaveBtn, saveThirdSticker);
+});
+
+fourthImageCropBtn.addEventListener('click', event => {
+  renderCropSquare(fourthSticker, fourthImageSaveBtn, saveFourthSticker);
+});
 
 firstImageBrightnessInput.addEventListener("change", () =>
-  updateImageSetting(firstImageSettings, "brightness", firstImageBrightnessInput.value, firstImage, firstImageCanvas, firstImageLoc, firstCanvasCtx)
+  updateImageSetting(firstSticker, "brightness", firstImageBrightnessInput.value)
 );
 
 firstImageSaturationInput.addEventListener("change", () =>
-  updateImageSetting(firstImageSettings, "saturation", firstImageSaturationInput.value, firstImage, firstImageCanvas, firstImageLoc, firstCanvasCtx)
+  updateImageSetting(firstSticker, "saturation", firstImageSaturationInput.value)
 );
 
 firstImageBlurInput.addEventListener("change", () =>
-  updateImageSetting(firstImageSettings, "blur", firstImageBlurInput.value, firstImage, firstImageCanvas, firstImageLoc, firstCanvasCtx)
+  updateImageSetting(firstSticker, "blur", firstImageBlurInput.value)
 );
 
 firstImageInversionInput.addEventListener("change", () =>
-  updateImageSetting(firstImageSettings, "inversion", firstImageInversionInput.value, firstImage, firstImageCanvas, firstImageLoc, firstCanvasCtx)
+  updateImageSetting(firstSticker, "inversion", firstImageInversionInput.value)
 );
 
 secondImageBrightnessInput.addEventListener("change", () =>
-  updateImageSetting(secondImageSettings, "brightness", secondImageBrightnessInput.value, secondImage, secondImageCanvas, secondImageLoc, secondCanvasCtx)
+  updateImageSetting(secondSticker, "brightness", secondImageBrightnessInput.value)
 );
 
 secondImageSaturationInput.addEventListener("change", () =>
-  updateImageSetting(secondImageSettings, "saturation", secondImageSaturationInput.value, secondImage, secondImageCanvas, secondImageLoc, secondCanvasCtx)
+  updateImageSetting(secondSticker, "saturation", secondImageSaturationInput.value)
 );
 
 secondImageBlurInput.addEventListener("change", () =>
-  updateImageSetting(secondImageSettings, "blur", secondImageBlurInput.value, secondImage, secondImageCanvas, secondImageLoc, secondCanvasCtx)
+  updateImageSetting(secondSticker, "blur", secondImageBlurInput.value)
 );
 
 secondImageInversionInput.addEventListener("change", () =>
-  updateImageSetting(secondImageSettings, "inversion", secondImageInversionInput.value, secondImage, secondImageCanvas, secondImageLoc, secondCanvasCtx)
+  updateImageSetting(secondSticker, "inversion", secondImageInversionInput.value)
 );
 
 thirdImageBrightnessInput.addEventListener("change", () =>
-  updateImageSetting(thirdImageSettings, "brightness", thirdImageBrightnessInput.value, thirdImage, thirdImageCanvas, thirdImageLoc, thirdCanvasCtx)
+  updateImageSetting(thirdSticker, "brightness", thirdImageBrightnessInput.value)
 );
 
 thirdImageSaturationInput.addEventListener("change", () =>
-  updateImageSetting(thirdImageSettings, "saturation", thirdImageSaturationInput.value, thirdImage, thirdImageCanvas, thirdImageLoc, thirdCanvasCtx)
+  updateImageSetting(thirdSticker, "saturation", thirdImageSaturationInput.value)
 );
 
 thirdImageBlurInput.addEventListener("change", () =>
-  updateImageSetting(thirdImageSettings, "blur", thirdImageBlurInput.value, thirdImage, thirdImageCanvas, thirdImageLoc, thirdCanvasCtx)
+  updateImageSetting(thirdSticker, "blur", thirdImageBlurInput.value)
 );
 
 thirdImageInversionInput.addEventListener("change", () =>
-  updateImageSetting(thirdImageSettings, "inversion", thirdImageInversionInput.value, thirdImage, thirdImageCanvas, thirdImageLoc, thirdCanvasCtx)
+  updateImageSetting(thirdSticker, "inversion", thirdImageInversionInput.value)
 );
 
 fourthImageBrightnessInput.addEventListener("change", () =>
-  updateImageSetting(fourthImageSettings, "brightness", fourthImageBrightnessInput.value, fourthImage, fourthImageCanvas, fourthImageLoc, fourthCanvasCtx)
+  updateImageSetting(fourthSticker, "brightness", fourthImageBrightnessInput.value)
 );
 
 fourthImageSaturationInput.addEventListener("change", () =>
-  updateImageSetting(fourthImageSettings, "saturation", fourthImageSaturationInput.value, fourthImage, fourthImageCanvas, fourthImageLoc, fourthCanvasCtx)
+  updateImageSetting(fourthSticker, "saturation", fourthImageSaturationInput.value)
 );
 
 fourthImageBlurInput.addEventListener("change", () =>
-  updateImageSetting(fourthImageSettings, "blur", fourthImageBlurInput.value, fourthImage, fourthImageCanvas, fourthImageLoc, fourthCanvasCtx)
+  updateImageSetting(fourthSticker, "blur", fourthImageBlurInput.value)
 );
 
 fourthImageInversionInput.addEventListener("change", () =>
-  updateImageSetting(fourthImageSettings, "inversion", fourthImageInversionInput.value, fourthImage, fourthImageCanvas, fourthImageLoc, fourthCanvasCtx)
+  updateImageSetting(fourthSticker, "inversion", fourthImageInversionInput.value)
 );  
