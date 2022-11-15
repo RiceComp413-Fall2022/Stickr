@@ -274,32 +274,6 @@ function renderCropSquare(sticker, saveBtn, saveFunc) {
 
   updateFrame();
 
-  // save_btn.addEventListener('click', event => {
-
-  //   cancelAnimationFrame(myReq);
-
-  //   clean_canvas();
-  //   renderImage(sticker);
-
-  //   clean_canvas();
-
-  //   renderImage(sticker);
-
-  //   let width = node2.x-node1.x
-  //   let height = node3.y-node1.y
-
-  //   sticker.image.src = sticker.imageLoc;
-  //   sticker.imageCanvas.width = width||sticker.image.width;
-  //   sticker.imageCanvas.height = height||sticker.image.height;
-
-  //   sticker.canvasCtx.filter = generateImageFilter(settings);
-  //   sticker.canvasCtx.drawImage(sticker.image, node1.x, node1.y, sticker.imageCanvas.width, sticker.imageCanvas.height, 0, 0, sticker.imageCanvas.width, sticker.imageCanvas.height);
-
-  //   image.setAttribute('crossorigin', 'anonymous');
-
-  //   saveImage(imageCanvas, image, imageLoc);
-  // });
-
   saveBtn.removeEventListener('click', saveFunc);
 
   function saveCroppedImage(event){
@@ -310,11 +284,9 @@ function renderCropSquare(sticker, saveBtn, saveFunc) {
     const height = node3.y-node1.y
 
     sticker.image.src = sticker.imageLoc;
-    sticker.imageCanvas.width = width||sticker.image.width;
-    sticker.imageCanvas.height = height||sticker.image.height;
 
     sticker.canvasCtx.filter = generateImageFilter(sticker);
-    sticker.canvasCtx.drawImage(sticker.image, node1.x, node1.y, sticker.imageCanvas.width, sticker.imageCanvas.height, 0, 0, sticker.imageCanvas.width, sticker.imageCanvas.height);
+    sticker.canvasCtx.drawImage(sticker.image, node1.x, node1.y, width, height, 0, 0, sticker.imageCanvas.width, sticker.imageCanvas.height);
 
     sticker.image.setAttribute('crossorigin', 'anonymous');
 
@@ -336,29 +308,34 @@ function saveImage(sticker) {
   sticker.currImage.setAttribute('crossorigin', 'anonymous');
   sticker.currImage.src = newUrl;
   sticker.imageLoc = newUrl;
+
 }
 
 
 function saveFirstSticker(event){
   saveImage(firstSticker);
+  firstImageLoc = firstSticker.imageLoc;
 }
 
 firstImageSaveBtn.addEventListener('click', saveFirstSticker);
 
 function saveSecondSticker(event){
   saveImage(secondSticker);
+  secondImageLoc = secondSticker.imageLoc;
 }
 
 secondImageSaveBtn.addEventListener('click', saveSecondSticker);
 
 function saveThirdSticker(event){
   saveImage(thirdSticker);
+  thirdImageLoc = thirdSticker.imageLoc;
 }
 
 thirdImageSaveBtn.addEventListener('click', saveThirdSticker);
 
 function saveFourthSticker(event){
   saveImage(fourthSticker);
+  fourthImageLoc = fourthSticker.imageLoc;
 }
 
 fourthImageSaveBtn.addEventListener('click', saveFourthSticker);
