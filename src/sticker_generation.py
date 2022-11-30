@@ -5,7 +5,7 @@ def generate_dalle_sticker(query):
   r = requests.post(
     'https://api.deepai.org/api/text2img',
     data={
-      'text': prepend_sticker_design_of(query),
+      'text': query,
     },
     headers={'api-key': '8bc69e15-14aa-49ce-9b62-7a28f2efa916'}
   )
@@ -13,10 +13,9 @@ def generate_dalle_sticker(query):
 
 def generate_stable_diffusion_sticker(query):
   model = replicate.models.get("stability-ai/stable-diffusion")
-  correct_query = prepend_sticker_design_of(query)
-  image_urls = model.predict(prompt=correct_query, num_outputs=4)
+  image_urls = model.predict(prompt=query, num_outputs=4)
   return image_urls
-
+  
 def generate_dummy_sticker(query):
   image_urls = [
   "https://replicate.delivery/pbxt/7TqfZvHjy7X6GiWsG7gl80UXqmbubsYO6YhGiaOPOeLDWK7PA/out-0.png", 
@@ -26,9 +25,23 @@ def generate_dummy_sticker(query):
   ]
   return image_urls
 
-def prepend_sticker_design_of(query):
+def engineer_prompt(query, cutout):
+  # Check for empty queries
   stripped_query = query.strip()
+  if not stripped_query:
+    return ""
+
+  final_query = stripped_query
+
+  # Prepend style guide
   if "sticker" not in stripped_query.lower():
-    return ("sticker design of "+stripped_query)
-  else: 
-    return stripped_query
+    final_query = "Sticker illustration of " + final_query
+
+  # Append cutout specification
+  if cutout == "circle":
+    final_query += ", circle cutout"
+  elif cutout == "square":
+    final_query += ", square cutout"
+
+  return final_query
+
