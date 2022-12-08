@@ -49,20 +49,19 @@
 
     <script type=text/javascript>
       function vary_image(url) {
-
-          {#const img1 = document.getElementById("firstImage").files[0]#}
-          const formData = new FormData();
-          formData.append("url", url);
-          {#formData.append('file', img1);#}
-
-          fetch("{{ url_for('search', query=query) }}", {
-              method: "POST",
-              body: formData
-          }).then(response => response.text()).then((newUrl) => {
-              console.log(newUrl)
-              firstImage.src = newUrl
+           fetch(url).then(res => res.blob())
+          .then(blob => {
+              const formData = new FormData();
+              formData.append('file', blob, 'image');
+              formData.append("url", url);
+              fetch("{{ url_for('search', query=query) }}", {
+                      method: "POST",
+                      body: formData
+                  }).then(response => response.text()).then((newUrl) => {
+                      console.log(newUrl)
+                      firstImage.src = newUrl
+                  });
           });
-
       }
     </script>
     
@@ -82,7 +81,7 @@
     </div>
 
     <div class="container" id="img_2">
-      <img id="secondImage" src={{ image_urls[1] }} alt="query result two"/>
+      <img id="secondImage" src={{ image_urls[1] }} alt="query result two">
       <button id="openSecondImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_2_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
