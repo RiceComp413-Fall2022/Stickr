@@ -108,14 +108,6 @@ function renderImage(sticker, sx = 0, sy = 0, width, height) {
 
 function draw(c, nodes, boundary) {
 
-  //draw nodes
-  for (var i in nodes) {
-    c.arc(nodes[i].x, nodes[i].y, nodes[i].r, 0, 2 * Math.PI);
-    c.fillStyle = nodes[i].color;
-    c.fill()
-    c.closePath();
-  }
-
   //draw boundary
   c.beginPath();
   c.moveTo(boundary.node1x, boundary.node1y);
@@ -134,13 +126,22 @@ function draw(c, nodes, boundary) {
   c.lineWidth = boundary.width;
   c.closePath();
   c.stroke();
+
+  //draw nodes
+  for (var i in nodes) {
+    c.arc(nodes[i].x, nodes[i].y, nodes[i].r, 0, 2 * Math.PI);
+    c.fillStyle = nodes[i].color;
+    c.fill()
+    c.closePath();
+  }
+  
 }
 
 function Node(x, y, r, color) {
   this.x = x;
   this.y = y;
   this.r = r || 15;
-  this.color = color || "#ff0";
+  this.color = color || "aqua";
 }
 
 function Box(node1, node2, node3, node4, width, color) {
@@ -149,7 +150,7 @@ function Box(node1, node2, node3, node4, width, color) {
   this.node3 = node3;
   this.node4 = node4;
   this.width = width || 5;
-  this.color = color || "#f00";
+  this.color = color || "grey";
   Object.defineProperties(this, {
     node1x: {
       "get": () => this.node1.x,
@@ -251,7 +252,7 @@ function handleMouseDrag(canvas, nodes) {
 
 function renderCropSquare(sticker, saveBtn, saveFunc) {
   
-  const node_radius = 15
+  const node_radius = 7.5
   const x_1 = 0
   const x_2 = sticker.imageCanvas.width;
   const y_1 = 0
