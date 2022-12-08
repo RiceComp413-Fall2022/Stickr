@@ -25,14 +25,20 @@ def search(query):
             raise Exception("Cannot search based on an empty query")
         # image_urls = generate_dalle_sticker(query)
         image_urls = generate_dummy_sticker(query)
+        print(image_urls)
         return render_template('search.html', query=query, image_urls=image_urls)
 
     elif request.method == 'POST':
         # Get the image from form
         url = request.form.get('url')
         print(url)
-        image_urls = generate_dummy_sticker(query)
-        return url
+        files = request.files
+        image = files.get('image').read()
+
+        # image_url = generate_dalle_variations(image)
+        image_url = url
+        print(image_url)
+        return image_url
         # return render_template('search.html', query=query, image_urls=image_urls)
 
 if __name__ == '__main__':

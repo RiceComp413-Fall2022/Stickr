@@ -52,7 +52,7 @@
            fetch(url).then(res => res.blob())
           .then(blob => {
               const formData = new FormData();
-              formData.append('file', blob, 'image');
+              formData.append('image', blob, 'image');
               formData.append("url", url);
               fetch("{{ url_for('search', query=query) }}", {
                       method: "POST",
