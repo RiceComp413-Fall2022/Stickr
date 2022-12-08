@@ -214,13 +214,28 @@ function handleMouseDrag(canvas, nodes) {
       var y = e.offsetY * (canvas.height / bbox.height);
       dragNode.x = x - offset.x0 + offset.x;
       dragNode.y = y - offset.y0 + offset.y;
+
+      if (last_moved == 0){
+        nodes[1].y = nodes[0].y;
+        nodes[3].x = nodes[0].x;
+      }
+      if (last_moved == 1){
+        nodes[2].x = nodes[1].x;
+        nodes[0].y = nodes[1].y;
+      }
+      if (last_moved == 2){
+        nodes[3].y = nodes[2].y
+        nodes[1].x = nodes[2].x
+      }
+      if (last_moved == 3){
+        nodes[2].y = nodes[3].y
+        nodes[0].x = nodes[3].x
+      }
     }
   });
   canvas.addEventListener("mouseup", function (e) {
     
     if (isDrag){
-
-
       if (last_moved == 0){
         nodes[1].y = nodes[0].y;
         nodes[3].x = nodes[0].x;
