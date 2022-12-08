@@ -312,10 +312,11 @@ function renderCropSquare(sticker, saveBtn, saveFunc) {
 
 let t = 'Sample text';
 
-function renderTextBox(sticker, saveBtn, saveFunc, textBox) {
+function renderTextBox(sticker, saveBtn, saveFunc, textBox, textSize) {
   sticker.canvasCtx.save();
   renderImage(sticker);
 
+  updateTextSize(textSize, textBox);
   textBox.style.display = "block";
   let centerX = sticker.imageCanvas.offsetLeft + sticker.imageCanvas.offsetWidth/2;
   let centerY = sticker.imageCanvas.offsetTop + sticker.imageCanvas.offsetHeight/2;
@@ -323,6 +324,7 @@ function renderTextBox(sticker, saveBtn, saveFunc, textBox) {
   let height = textBox.clientHeight;
   textBox.style.left = centerX - (width/2) + 'px';
   textBox.style.top = centerY - (height/2) + 'px';
+
   textBox.style.display = "block";
 
   t = 'Sample text';
@@ -370,11 +372,22 @@ function renderTextBox(sticker, saveBtn, saveFunc, textBox) {
     // Draw the text using Canvas fillText() method.
     let x = (textLeft - canvasLeft)*(canvasWidth/imageWidth);
     // let y = (textTop - canvasTop)*(canvasHeight/imageHeight) + parseInt(imageAreaPadding);
-    let y = (textTop - canvasTop)*(canvasHeight/imageHeight) + parseInt(imageAreaPadding) + parseInt(textBox.style.fontSize.replace('px',''))*2/3;
-    console.log(x, y);
-    console.log((textTop - canvasTop)*(canvasHeight/imageHeight), parseInt(imageAreaPadding), parseInt(textBox.style.fontSize.replace('px','')))
-    console.log(textBox.style.fontSize.replace('px',''))
-    ctx.fillText(str, x, y);
+    let fontSize = parseInt(textBox.style.fontSize.replace('NaN', '14').replace('px',''));
+    let y = (textTop - canvasTop)*(canvasHeight/imageHeight) + fontSize + (fontSize-50)/10//+'px'// + parseInt(imageAreaPadding) + parseInt(textBox.style.fontSize.replace('px',''))*2/3;
+    // y = textOffsets.bottom - canvasTop;
+    // console.log(x, y);
+    // console.log((textTop - canvasTop)*(canvasHeight/imageHeight), parseInt(imageAreaPadding), parseInt(textBox.style.fontSize.replace('px','')))
+    // console.log(textBox.style.fontSize.replace('px',''))
+    // ctx.fillText(str, x, y);
+    for (let i = 0; i <= str.length - 1; i++) {
+            	
+      ctx.fillText(
+          str[i]
+              .replace('</div>','')
+              .replace('<br>', '')
+              .replace(';',''), 
+          x, y + i * 15);
+  }
     
     // Make the textbox disappear
     textBox.style.display = "none";
@@ -408,7 +421,7 @@ function updateTextSize(inputBox, textEntry) {
 $(document).ready(function() {
   $(function() { 
       $('#firstTextEntry').draggable({
-          // containment: "parent"
+          containment: "parent"
       });
       $('#secondTextEntry').draggable({
         containment: "parent"
@@ -428,14 +441,14 @@ firstImageTextInput.addEventListener('keyup', event => {
   writeText(firstImageTextInput, firstTextEntry)
 });
 
-let firstImageTextButton = document.getElementById("textEditFirstImage");
-firstImageTextButton.addEventListener('click', event => { 
-  renderTextBox(firstSticker, firstImageSaveBtn, saveFirstSticker, firstTextEntry);
-});
-
 let firstImageTextSize = document.getElementById("firstImageTextSize");
 firstImageTextSize.addEventListener('keyup', event => {
   updateTextSize(firstImageTextSize, firstTextEntry);
+});
+
+let firstImageTextButton = document.getElementById("textEditFirstImage");
+firstImageTextButton.addEventListener('click', event => { 
+  renderTextBox(firstSticker, firstImageSaveBtn, saveFirstSticker, firstTextEntry, firstImageTextSize);
 });
 
 
@@ -445,14 +458,14 @@ secondImageTextInput.addEventListener('keyup', event => {
   writeText(secondImageTextInput, secondTextEntry)
 });
 
-let secondImageTextButton = document.getElementById("textEditSecondImage");
-secondImageTextButton.addEventListener('click', event => { 
-  renderTextBox(secondSticker, secondImageSaveBtn, saveSecondSticker, secondTextEntry);
-});
-
 let secondImageTextSize = document.getElementById("secondImageTextSize");
 secondImageTextSize.addEventListener('keyup', event => {
   updateTextSize(secondImageTextSize, secondTextEntry);
+});
+
+let secondImageTextButton = document.getElementById("textEditSecondImage");
+secondImageTextButton.addEventListener('click', event => { 
+  renderTextBox(secondSticker, secondImageSaveBtn, saveSecondSticker, secondTextEntry, secondImageTextSize);
 });
 
 
@@ -462,14 +475,14 @@ thirdImageTextInput.addEventListener('keyup', event => {
   writeText(thirdImageTextInput, thirdTextEntry)
 });
 
-let thirdImageTextButton = document.getElementById("textEditThirdImage");
-thirdImageTextButton.addEventListener('click', event => { 
-  renderTextBox(thirdSticker, thirdImageSaveBtn, saveThirdSticker, thirdTextEntry);
-});
-
 let thirdImageTextSize = document.getElementById("thirdImageTextSize");
 thirdImageTextSize.addEventListener('keyup', event => {
   updateTextSize(thirdImageTextSize, thirdTextEntry);
+});
+
+let thirdImageTextButton = document.getElementById("textEditThirdImage");
+thirdImageTextButton.addEventListener('click', event => { 
+  renderTextBox(thirdSticker, thirdImageSaveBtn, saveThirdSticker, thirdTextEntry, thirdImageTextSize);
 });
 
 
@@ -479,14 +492,14 @@ fourthImageTextInput.addEventListener('keyup', event => {
   writeText(fourthImageTextInput, fourthTextEntry)
 });
 
-let fourthImageTextButton = document.getElementById("textEditFourthImage");
-fourthImageTextButton.addEventListener('click', event => { 
-  renderTextBox(fourthSticker, fourthImageSaveBtn, saveFourthSticker, fourthTextEntry);
-});
-
 let fourthImageTextSize = document.getElementById("fourthImageTextSize");
 fourthImageTextSize.addEventListener('keyup', event => {
   updateTextSize(fourthImageTextSize, fourthTextEntry);
+});
+
+let fourthImageTextButton = document.getElementById("textEditFourthImage");
+fourthImageTextButton.addEventListener('click', event => { 
+  renderTextBox(fourthSticker, fourthImageSaveBtn, saveFourthSticker, fourthTextEntry, fourthImageTextSize);
 });
 
 
