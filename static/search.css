@@ -50,6 +50,19 @@ h1 {
   border-radius: 5px;
 }
 
+.container .btn.btn-default {
+  position: absolute;
+  top: 10%;
+  left: 13%;
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
 .container img {
   width: 100%;
   height: auto;

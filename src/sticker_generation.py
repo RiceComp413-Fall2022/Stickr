@@ -12,6 +12,16 @@ def generate_dalle_sticker(query):
   image_urls = [response['data'][i]['url'] for i in range(4)]
   return image_urls
 
+
+def generate_dalle_variations(url):
+  response = openai.Image.create_variation(
+    image=open(url, "rb"),
+    n=1,
+    size="512x512"
+  )
+  image_url = response['data'][0]['url']
+  return image_url
+
 def generate_deepai_sticker(query):
   r = requests.post(
     'https://api.deepai.org/api/text2img',
@@ -55,4 +65,3 @@ def engineer_prompt(query, cutout):
     final_query += ", square cutout"
 
   return final_query
-

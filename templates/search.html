@@ -46,12 +46,36 @@
         });
       }
     </script>
+
+    <script type=text/javascript>
+      function vary_image(url) {
+
+          {#const img1 = document.getElementById("firstImage").files[0]#}
+          const formData = new FormData();
+          formData.append("url", url);
+          {#formData.append('file', img1);#}
+
+          fetch("{{ url_for('search', query=query) }}", {
+              method: "POST",
+              body: formData
+          }).then(response => response.text()).then((newUrl) => {
+              console.log(newUrl)
+              firstImage.src = newUrl
+          });
+
+      }
+    </script>
     
     <div class="container" id="img_1">
       <img id="firstImage" src={{ image_urls[0] }} alt="query result one"/>
       <button id="openFirstImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_1_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
+
+        <button class="btn btn-default"  onclick="vary_image(firstImage.src)">
+            <i class="glyphicon glyphicon-random"></i>
+        </button>
+
       <button class='btn' onclick="download_from_url(firstImage.src, 'download_{{query}}_1.png')">
         <i class="fa fa-download"></i>
       </button>
@@ -62,6 +86,9 @@
       <button id="openSecondImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_2_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
+        <button class="btn btn-default"  onclick="vary_image(secondImage.src)">
+            <i class="glyphicon glyphicon-random"></i>
+        </button>
       <button class='btn' onclick="download_from_url(secondImage.src, 'download_{{query}}_2.png')">
         <i class="fa fa-download"></i>
       </button>
@@ -72,6 +99,9 @@
       <button id="openThirdImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_3_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
+        <button class="btn btn-default"  onclick="vary_image(thirdImage.src)">
+            <i class="glyphicon glyphicon-random"></i>
+        </button>
       <button class='btn' onclick="download_from_url(thirdImage.src, 'download_{{query}}_3.png')">
         <i class="fa fa-download"></i>
       </button>
@@ -82,12 +112,15 @@
       <button id="openFourthImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_4_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
+        <button class="btn btn-default"  onclick="vary_image(fourthImage.src)">
+            <i class="glyphicon glyphicon-random"></i>
+        </button>
       <button class='btn' onclick="download_from_url(fourthImage.src, 'download_{{query}}_4.png')">
         <i class="fa fa-download"></i>
       </button>
     </div> 
     
-    <!-- Modals for Editting -->
+    <!-- Modals for Editing -->
     <div class="modal fade bd-example-modal-lg" id="img_1_modal" tabindex="-1" role="dialog" aria-labelledby="Editing View for Image 1" aria-hidden="true"> -->
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
