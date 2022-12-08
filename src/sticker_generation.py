@@ -34,7 +34,7 @@ def generate_deepai_sticker(query):
 
 def generate_stable_diffusion_sticker(query):
   model = replicate.models.get("stability-ai/stable-diffusion")
-  image_urls = model.predict(prompt=query, num_outputs=4, width=512, height=512)
+  image_urls = model.predict(prompt=query, num_outputs=4, width = 512, height = 512)
   return image_urls
   
 def generate_dummy_sticker(query):
