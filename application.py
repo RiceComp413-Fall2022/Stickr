@@ -23,7 +23,7 @@ def search(query):
   if not query.strip():
     raise Exception("Cannot search based on an empty query")
   #image_urls = generate_dalle_sticker(query)
-  image_urls = generate_dummy_sticker(query)
+  image_urls = generate_stable_diffusion_sticker(query)
   return render_template('search.html', query=query, image_urls=image_urls)
 
 
