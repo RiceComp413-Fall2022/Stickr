@@ -46,7 +46,7 @@ def generate_dummy_sticker(query):
   ]
   return image_urls
 
-def engineer_prompt(query, cutout):
+def engineer_prompt(query, cutout, style):
   # Check for empty queries
   stripped_query = query.strip()
   if not stripped_query:
@@ -58,10 +58,20 @@ def engineer_prompt(query, cutout):
   if "sticker" not in stripped_query.lower():
     final_query = "Sticker illustration of " + final_query
 
+  if style == 'Mono':
+    final_query += ', monochrome line'
+  elif style == 'Vivid':
+    final_query += ', hd dramatic illustration'
+  elif style == 'Abstract':
+    final_query = 'Abstract ' + final_query + ' detailed sticker, artstation hd'
+
+
   # Append cutout specification
   if cutout == "circle":
     final_query += ", circle cutout"
   elif cutout == "square":
     final_query += ", square cutout"
+
+
 
   return final_query
