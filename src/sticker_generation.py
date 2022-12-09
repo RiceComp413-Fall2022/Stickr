@@ -39,8 +39,8 @@ def generate_stable_diffusion_sticker(query):
   
 def generate_dummy_sticker(query):
   image_urls = [
-  "https://oaidalleapiprodscus.blob.core.windows.net/private/org-pAcoYvi80hCOVXyPQiQHWtPS/user-icheNIsCw0JW82RtAzEbiTr4/img-R4st2PL7utCiK5OtgICPYx1X.png?st=2022-12-08T11%3A37%3A51Z&se=2022-12-08T13%3A37%3A51Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2022-12-08T08%3A46%3A45Z&ske=2022-12-09T08%3A46%3A45Z&sks=b&skv=2021-08-06&sig=fjC8arKm/vUSo4KLyB2cS5fwUyMXOvQnRaPFHIqNUCE%3D",
-  "https://oaidalleapiprodscus.blob.core.windows.net/private/org-pAcoYvi80hCOVXyPQiQHWtPS/user-icheNIsCw0JW82RtAzEbiTr4/img-wDfNsAecyvgGKQHrFCfhkXVt.png?st=2022-12-08T11%3A34%3A33Z&se=2022-12-08T13%3A34%3A33Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2022-12-08T09%3A31%3A38Z&ske=2022-12-09T09%3A31%3A38Z&sks=b&skv=2021-08-06&sig=xIN4BmOhxWiloqXnAhxPkpogD9iYFzIF4sqKxZg9qAQ%3D",
+  "https://replicate.delivery/pbxt/7TqfZvHjy7X6GiWsG7gl80UXqmbubsYO6YhGiaOPOeLDWK7PA/out-0.png",
+  "https://replicate.com/api/models/stability-ai/stable-diffusion/files/19e3a073-de22-49fd-97e5-cd3942b41c9b/out-0.png",
   "https://replicate.delivery/pbxt/SzneDGsKAvRuOSKKLLvfO9uJZjD7c9PPPgBZ1RTCAhGEWK7PA/out-1.png",
   "https://replicate.delivery/pbxt/L57IAErahd40KllFsp9bsMrI2TDG5xeQnDOrt9IoMDQCLl9HA/out-3.png"
   ]

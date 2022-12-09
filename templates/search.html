@@ -43,31 +43,29 @@
           );
       });
     }
-  </script>
 
-<script type=text/javascript>
-  function fetch_from_search(temp_query, temp_model, formData) {
-    return fetch("{{ url_for('search', query=temp_query, model=temp_model) }}", {
-                  method: "POST",
-                  body: formData
-              })
-  }
-  function vary_image(image) {
-       fetch('https://cors-anywhere.herokuapp.com/'+image.src).then(res => res.blob())
-      .then(blob => {
-          const formData = new FormData();
-          formData.append('image', blob, 'image');
-          formData.append("url", image.src);
-          fetch("{{ url_for('search', query=query, model=model) }}", {
-                  method: "POST",
-                  body: formData
-              }).then(response => response.text()).then((newUrl) => {
-                  console.log(newUrl);
-                  image.src = newUrl;
-                  // sticker.imageLoc = newUrl;
-              });
-      });
-  }
+    function fetch_from_search(temp_query, temp_model, formData) {
+      return fetch("{{ url_for('search', query=temp_query, model=temp_model) }}", {
+                    method: "POST",
+                    body: formData
+                })
+    }
+    function vary_image(image) {
+         fetch('https://cors-anywhere.herokuapp.com/'+image.src).then(res => res.blob())
+        .then(blob => {
+            const formData = new FormData();
+            formData.append('image', blob, 'image');
+            formData.append("url", image.src);
+            fetch("{{ url_for('search', query=query, model=model) }}", {
+                    method: "POST",
+                    body: formData
+                }).then(response => response.text()).then((newUrl) => {
+                    console.log(newUrl);
+                    image.src = newUrl;
+                    // sticker.imageLoc = newUrl;
+                });
+        });
+    }
 </script>
   
   <script type="module" src="{{ url_for('static', filename='search.js') }}" ></script>
@@ -81,8 +79,6 @@
   <a href="{{ url_for('home') }}" class='btn btn-secondary' id='backbutton'>Create New Search Query</a>
 
   <div id="results">
-
-    
     
     <div class="container" id="img_1">
       <img id="firstImage" src={{ image_urls[0] }} alt="query result one"/>
@@ -90,7 +86,7 @@
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
 
-        <button class="btn btn-default" id="firstStickerVariation">
+        <button class="btn btn-default" id="firstStickerVariation" onclick="vary_image(firstImage)">
             <i class="glyphicon glyphicon-random"></i>
         </button>
 
@@ -118,6 +114,7 @@
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
         <button class="btn btn-default" id="thirdStickerVariation" onclick="vary_image(thirdImage)">
+
             <i class="glyphicon glyphicon-random"></i>
         </button>
       <button class='btn' onclick="download_from_url(thirdImage.src, 'download_{{query}}_3.png')">
@@ -152,7 +149,9 @@
             <h5 class="modal-title" id="helpModalLabel">How to Use?</h5>
           </div>
           <div class="modal-body">
-            How to use?
+              Now that you have your sticker designs, feel free to remix and edit them as you please! The remix feature
+              will generate a variation of the given sticker design, while the edit tool provides a suite of functionalities
+              like cropping and text editing! When you're down, simply download the design.
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
