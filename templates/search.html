@@ -50,22 +50,6 @@
                     body: formData
                 })
     }
-    function vary_image(image) {
-         fetch('https://cors-anywhere.herokuapp.com/'+image.src).then(res => res.blob())
-        .then(blob => {
-            const formData = new FormData();
-            formData.append('image', blob, 'image');
-            formData.append("url", image.src);
-            fetch("{{ url_for('search', query=query, model=model) }}", {
-                    method: "POST",
-                    body: formData
-                }).then(response => response.text()).then((newUrl) => {
-                    console.log(newUrl);
-                    image.src = newUrl;
-                    // sticker.imageLoc = newUrl;
-                });
-        });
-    }
 </script>
   
   <script type="module" src="{{ url_for('static', filename='search.js') }}" ></script>
@@ -86,10 +70,6 @@
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
 
-        <button class="btn btn-default" id="firstStickerVariation" onclick="vary_image(firstImage)">
-            <i class="glyphicon glyphicon-random"></i>
-        </button>
-
       <button class='btn' onclick="download_from_url(firstImage.src, 'download_{{query}}_1.png')">
         <i class="fa fa-download"></i>
       </button>
@@ -100,9 +80,6 @@
       <button id="openSecondImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_2_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
-        <button class="btn btn-default" id="secondStickerVariation" onclick="vary_image(secondImage)"> 
-            <i class="glyphicon glyphicon-random"></i>
-        </button>
       <button class='btn' onclick="download_from_url(secondImage.src, 'download_{{query}}_2.png')">
         <i class="fa fa-download"></i>
       </button>
@@ -113,10 +90,6 @@
       <button id="openThirdImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_3_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
-        <button class="btn btn-default" id="thirdStickerVariation" onclick="vary_image(thirdImage)">
-
-            <i class="glyphicon glyphicon-random"></i>
-        </button>
       <button class='btn' onclick="download_from_url(thirdImage.src, 'download_{{query}}_3.png')">
         <i class="fa fa-download"></i>
       </button>
@@ -127,9 +100,6 @@
       <button id="openFourthImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_4_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
-        <button class="btn btn-default" id="fourthStickerVariation" onclick="vary_image(fourthImage)">
-            <i class="glyphicon glyphicon-random"></i>
-        </button>
       <button class='btn' onclick="download_from_url(fourthImage.src, 'download_{{query}}_4.png')">
         <i class="fa fa-download"></i>
       </button>
