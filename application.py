@@ -38,8 +38,8 @@ def search(query, model):
         files = request.files
         image = files.get('image').read()
 
-        # image_url = generate_dalle_variations(image)
-        image_url = url
+        image_url = generate_dalle_variations(image)
+        # image_url = url
         print(image_url)
         return image_url
         # return render_template('search.html', query=query, image_urls=image_urls)
