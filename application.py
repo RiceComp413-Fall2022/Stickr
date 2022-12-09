@@ -13,8 +13,11 @@ def home():
     if form.validate_on_submit():
       query = request.form['query']
       cutout = request.form['cutout']
-      final_query = engineer_prompt(query, cutout)
-      model = request.form['model']
+      style = request.form['style']
+
+      model = 'DALL-E' if (style in ['DALL-E', 'Mono']) else 'default'
+      final_query = engineer_prompt(query, cutout, style)
+
       return redirect(url_for('search', query=final_query, model=model))
     return render_template('home.html', form=form)
 
