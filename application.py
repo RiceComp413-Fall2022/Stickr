@@ -14,19 +14,21 @@ def home():
       query = request.form['query']
       cutout = request.form['cutout']
       final_query = engineer_prompt(query, cutout)
-      return redirect(url_for('search', query=final_query))
+      model = request.form['model']
+      return redirect(url_for('search', query=final_query, model=model))
     return render_template('home.html', form=form)
 
-@application.route("/search/<query>", methods=['GET', 'POST'])
-def search(query):
+@application.route("/search/<query>/<model>", methods=['GET', 'POST'])
+def search(query, model):
     global image_urls
     if request.method == 'GET':
         if not query.strip():
             raise Exception("Cannot search based on an empty query")
-        # image_urls = generate_dalle_sticker(query)
-        image_urls = generate_stable_diffusion_sticker(query)
-        image_urls = generate_dummy_sticker(query)
-        # print(image_urls)
+        
+        if model == 'default':
+          image_urls = generate_stable_diffusion_sticker(query)
+        else:
+          image_urls = generate_dalle_sticker(query)
         return render_template('search.html', query=query, image_urls=image_urls)
 
     elif request.method == 'POST':
