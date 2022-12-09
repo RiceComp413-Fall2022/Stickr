@@ -44,6 +44,31 @@
       });
     }
   </script>
+
+<script type=text/javascript>
+  function fetch_from_search(temp_query, temp_model, formData) {
+    return fetch("{{ url_for('search', query=temp_query, model=temp_model) }}", {
+                  method: "POST",
+                  body: formData
+              })
+  }
+  function vary_image(image) {
+       fetch('https://cors-anywhere.herokuapp.com/'+image.src).then(res => res.blob())
+      .then(blob => {
+          const formData = new FormData();
+          formData.append('image', blob, 'image');
+          formData.append("url", image.src);
+          fetch("{{ url_for('search', query=query, model=model) }}", {
+                  method: "POST",
+                  body: formData
+              }).then(response => response.text()).then((newUrl) => {
+                  console.log(newUrl);
+                  image.src = newUrl;
+                  // sticker.imageLoc = newUrl;
+              });
+      });
+  }
+</script>
   
   <script type="module" src="{{ url_for('static', filename='search.js') }}" ></script>
 
@@ -57,23 +82,7 @@
 
   <div id="results">
 
-    <script type=text/javascript>
-      function vary_image(url) {
-           fetch(url).then(res => res.blob())
-          .then(blob => {
-              const formData = new FormData();
-              formData.append('image', blob, 'image');
-              formData.append("url", url);
-              fetch("{{ url_for('search', query=query) }}", {
-                      method: "POST",
-                      body: formData
-                  }).then(response => response.text()).then((newUrl) => {
-                      console.log(newUrl)
-                      firstImage.src = newUrl
-                  });
-          });
-      }
-    </script>
+    
     
     <div class="container" id="img_1">
       <img id="firstImage" src={{ image_urls[0] }} alt="query result one"/>
@@ -81,7 +90,7 @@
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
 
-        <button class="btn btn-default"  onclick="vary_image(firstImage.src)">
+        <button class="btn btn-default" id="firstStickerVariation">
             <i class="glyphicon glyphicon-random"></i>
         </button>
 
@@ -95,7 +104,7 @@
       <button id="openSecondImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_2_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
-        <button class="btn btn-default"  onclick="vary_image(secondImage.src)">
+        <button class="btn btn-default" id="secondStickerVariation" onclick="vary_image(secondImage)"> 
             <i class="glyphicon glyphicon-random"></i>
         </button>
       <button class='btn' onclick="download_from_url(secondImage.src, 'download_{{query}}_2.png')">
@@ -108,7 +117,7 @@
       <button id="openThirdImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_3_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
-        <button class="btn btn-default"  onclick="vary_image(thirdImage.src)">
+        <button class="btn btn-default" id="thirdStickerVariation" onclick="vary_image(thirdImage)">
             <i class="glyphicon glyphicon-random"></i>
         </button>
       <button class='btn' onclick="download_from_url(thirdImage.src, 'download_{{query}}_3.png')">
@@ -121,7 +130,7 @@
       <button id="openFourthImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_4_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
-        <button class="btn btn-default"  onclick="vary_image(fourthImage.src)">
+        <button class="btn btn-default" id="fourthStickerVariation" onclick="vary_image(fourthImage)">
             <i class="glyphicon glyphicon-random"></i>
         </button>
       <button class='btn' onclick="download_from_url(fourthImage.src, 'download_{{query}}_4.png')">
@@ -194,7 +203,7 @@
               <div class="toolbar-item">
                 <label class="tool-label" for="crop">Text Editing</label>
                 <button id="textEditFirstImage" type="button" class="btn btn-primary">Add Text</button>
-                <textarea id="textInputFirstImage" class="tool-text-input" type="text" placeholder="Enter Text"></textarea>
+                <input id="textInputFirstImage" class="tool-text-input" type="text" placeholder="Enter Text" class="form-control"/>
                 <!-- <h4>Change Text Color Below</h4> -->
                 <label class="tool-label" for="crop">Text Color</label>
                 <input id="firstImageTextColor" type="text" value="#269FAF" class="form-control"/>
@@ -266,7 +275,7 @@
               <div class="toolbar-item">
                 <label class="tool-label" for="crop">Text Editing</label>
                 <button id="textEditSecondImage" type="button" class="btn btn-primary">Add Text</button>
-                <textarea id="textInputSecondImage" class="tool-text-input" type="text" placeholder="Enter Text"></textarea>
+                <input id="textInputSecondImage" class="tool-text-input" type="text" placeholder="Enter Text" class="form-control"/>
                 <!-- <h4>Change Text Color Below</h4> -->
                 <label class="tool-label" for="crop">Text Color</label>
                 <input id="secondImageTextColor" type="text" value="#269FAF" class="form-control"/>
@@ -337,7 +346,7 @@
               <div class="toolbar-item">
                 <label class="tool-label" for="crop">Text Editing</label>
                 <button id="textEditThirdImage" type="button" class="btn btn-primary">Add Text</button>
-                <textarea id="textInputThirdImage" class="tool-text-input" type="text" placeholder="Enter Text"></textarea>
+                <input id="textInputThirdImage" class="tool-text-input" type="text" placeholder="Enter Text" class="form-control"/>
                 <label class="tool-label" for="crop">Text Color</label>
                 <input id="thirdImageTextColor" type="text" value="#269FAF" class="form-control"/>
                 <label class="tool-label" for="crop">Text Size</label>
@@ -407,7 +416,7 @@
               <div class="toolbar-item">
                 <label class="tool-label" for="crop">Text Editing</label>
                 <button id="textEditFourthImage" type="button" class="btn btn-primary">Add Text</button>
-                <textarea id="textInputFourthImage" class="tool-text-input" type="text" placeholder="Enter Text"></textarea>
+                <input id="textInputFourthImage" class="tool-text-input" type="text" placeholder="Enter Text" class="form-control"/>
                 <label class="tool-label" for="crop">Text Color</label>
                 <input id="fourthImageTextColor" type="text" value="#269FAF" class="form-control"/>
                 <label class="tool-label" for="crop">Text Size</label>
