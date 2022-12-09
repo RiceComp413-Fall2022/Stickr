@@ -108,14 +108,6 @@ function renderImage(sticker, sx = 0, sy = 0, width, height) {
 
 function draw(c, nodes, boundary) {
 
-  //draw nodes
-  for (var i in nodes) {
-    c.arc(nodes[i].x, nodes[i].y, nodes[i].r, 0, 2 * Math.PI);
-    c.fillStyle = nodes[i].color;
-    c.fill()
-    c.closePath();
-  }
-
   //draw boundary
   c.beginPath();
   c.moveTo(boundary.node1x, boundary.node1y);
@@ -134,13 +126,22 @@ function draw(c, nodes, boundary) {
   c.lineWidth = boundary.width;
   c.closePath();
   c.stroke();
+
+  //draw nodes
+  for (var i in nodes) {
+    c.arc(nodes[i].x, nodes[i].y, nodes[i].r, 0, 2 * Math.PI);
+    c.fillStyle = nodes[i].color;
+    c.fill()
+    c.closePath();
+  }
+  
 }
 
 function Node(x, y, r, color) {
   this.x = x;
   this.y = y;
   this.r = r || 15;
-  this.color = color || "#ff0";
+  this.color = color || "aqua";
 }
 
 function Box(node1, node2, node3, node4, width, color) {
@@ -149,7 +150,7 @@ function Box(node1, node2, node3, node4, width, color) {
   this.node3 = node3;
   this.node4 = node4;
   this.width = width || 5;
-  this.color = color || "#f00";
+  this.color = color || "grey";
   Object.defineProperties(this, {
     node1x: {
       "get": () => this.node1.x,
@@ -213,13 +214,28 @@ function handleMouseDrag(canvas, nodes) {
       var y = e.offsetY * (canvas.height / bbox.height);
       dragNode.x = x - offset.x0 + offset.x;
       dragNode.y = y - offset.y0 + offset.y;
+
+      if (last_moved == 0){
+        nodes[1].y = nodes[0].y;
+        nodes[3].x = nodes[0].x;
+      }
+      if (last_moved == 1){
+        nodes[2].x = nodes[1].x;
+        nodes[0].y = nodes[1].y;
+      }
+      if (last_moved == 2){
+        nodes[3].y = nodes[2].y
+        nodes[1].x = nodes[2].x
+      }
+      if (last_moved == 3){
+        nodes[2].y = nodes[3].y
+        nodes[0].x = nodes[3].x
+      }
     }
   });
   canvas.addEventListener("mouseup", function (e) {
     
     if (isDrag){
-
-
       if (last_moved == 0){
         nodes[1].y = nodes[0].y;
         nodes[3].x = nodes[0].x;
@@ -251,7 +267,7 @@ function handleMouseDrag(canvas, nodes) {
 
 function renderCropSquare(sticker, saveBtn, saveFunc) {
   
-  const node_radius = 15
+  const node_radius = 7.5
   const x_1 = 0
   const x_2 = sticker.imageCanvas.width;
   const y_1 = 0
@@ -310,7 +326,201 @@ function renderCropSquare(sticker, saveBtn, saveFunc) {
   return
 }
 
+let t = 'Sample text';
+
+function renderTextBox(sticker, saveBtn, saveFunc, textBox, textSize) {
+  sticker.canvasCtx.save();
+  renderImage(sticker);
+
+  updateTextSize(textSize, textBox);
+  textBox.style.display = "block";
+  let centerX = sticker.imageCanvas.offsetLeft + sticker.imageCanvas.offsetWidth/2;
+  let centerY = sticker.imageCanvas.offsetTop + sticker.imageCanvas.offsetHeight/2;
+  let width = textBox.clientWidth;
+  let height = textBox.clientHeight;
+  textBox.style.left = centerX - (width/2) + 'px';
+  textBox.style.top = centerY - (height/2) + 'px';
+
+  textBox.style.display = "block";
+
+  t = 'Sample text';
+
+  saveBtn.removeEventListener('click', saveFunc);
+
+  function saveTextBoxOntoCanvas(event) {
+    if (textBox.style.display == "none") {
+      console.log("No textbox present");
+      return;
+    }
+  
+    let ctx = sticker.canvasCtx;
+    ctx.drawImage(sticker.image, 0, 0);
+    
+    // Set where the textbox is added onto the canvas
+    var textOffsets = textBox.getBoundingClientRect();
+    var canvasOffsets = sticker.imageCanvas.getBoundingClientRect();
+    let textLeft = textOffsets.left;
+    let textTop = textOffsets.top;
+    let canvasLeft = canvasOffsets.left;
+    let canvasTop = canvasOffsets.top;
+
+    // Need to handle scale differences between canvas and image.
+    let canvasWidth = sticker.imageCanvas.width;
+    let canvasHeight = sticker.imageCanvas.height;
+
+    let imageWidth = canvasWidth-8;
+    let imageHeight = canvasHeight-8;
+
+    // Setting up text type descriptions
+    var textBoxStyle = getComputedStyle(textBox);
+    ctx.fillStyle = textBoxStyle.color;
+    ctx.font = textBoxStyle.font;
+
+    // ctx.height = firstImageCanvas.height;
+    // console.log(ctx.height);
+
+    // Take into account padding values
+    let imageAreaPadding = getComputedStyle(document.querySelector('.image-area')).padding.replace('px','');
+    
+    // Get the text (it can a word or a sentence) to write over the image.
+    let str = textBox.innerHTML.replace(/\n\r?/g, '<br />').split('<br />');    
+
+    // Draw the text using Canvas fillText() method.
+    let x = (textLeft - canvasLeft)*(canvasWidth/imageWidth);
+    // let y = (textTop - canvasTop)*(canvasHeight/imageHeight) + parseInt(imageAreaPadding);
+    let fontSize = parseInt(textBox.style.fontSize.replace('NaN', '14').replace('px',''));
+    let y = (textTop - canvasTop)*(canvasHeight/imageHeight) + fontSize + (fontSize-50)/10//+'px'// + parseInt(imageAreaPadding) + parseInt(textBox.style.fontSize.replace('px',''))*2/3;
+    // y = textOffsets.bottom - canvasTop;
+    // console.log(x, y);
+    // console.log((textTop - canvasTop)*(canvasHeight/imageHeight), parseInt(imageAreaPadding), parseInt(textBox.style.fontSize.replace('px','')))
+    // console.log(textBox.style.fontSize.replace('px',''))
+    // ctx.fillText(str, x, y);
+    for (let i = 0; i <= str.length - 1; i++) {
+            	
+      ctx.fillText(
+          str[i]
+              .replace('</div>','')
+              .replace('<br>', '')
+              .replace(';',''), 
+          x, y + i * 15);
+  }
+    
+    // Make the textbox disappear
+    textBox.style.display = "none";
+
+    saveImage(sticker);
+
+    // Set the save button to what it previously was
+    saveBtn.removeEventListener('click', saveTextBoxOntoCanvas);
+    saveBtn.addEventListener('click', saveFunc);
+
+    return;
+  }
+
+  saveBtn.addEventListener('click', saveTextBoxOntoCanvas);
+
+  return
+}
+
+function writeText(inputBox, textBox) {
+  t = inputBox.value;
+  textBox.innerHTML = t.replace(/\n\r?/g, '<br />').replace(/" "?/g, ' &nbsp;');
+}
+
+function updateTextSize(inputBox, textEntry) {
+  let intInput = parseInt(inputBox.value)
+  if (!isNaN(intInput) && (intInput > 0)) {
+    textEntry.style.fontSize = intInput+'px';
+  }
+}
+
+$(document).ready(function() {
+  $(function() { 
+      $('#firstTextEntry').draggable({
+          containment: "parent"
+      });
+      $('#secondTextEntry').draggable({
+        containment: "parent"
+      });
+      $('#thirdTextEntry').draggable({
+        containment: "parent"
+      });
+      $('#fourthTextEntry').draggable({
+        containment: "parent"
+      });
+  });
+});
+
+let firstImageTextInput = document.getElementById("textInputFirstImage");
+let firstTextEntry = document.getElementById("firstTextEntry");
+firstImageTextInput.addEventListener('keyup', event => {
+  writeText(firstImageTextInput, firstTextEntry)
+});
+
+let firstImageTextSize = document.getElementById("firstImageTextSize");
+firstImageTextSize.addEventListener('keyup', event => {
+  updateTextSize(firstImageTextSize, firstTextEntry);
+});
+
+let firstImageTextButton = document.getElementById("textEditFirstImage");
+firstImageTextButton.addEventListener('click', event => { 
+  renderTextBox(firstSticker, firstImageSaveBtn, saveFirstSticker, firstTextEntry, firstImageTextSize);
+});
+
+
+let secondImageTextInput = document.getElementById("textInputSecondImage");
+let secondTextEntry = document.getElementById("secondTextEntry");
+secondImageTextInput.addEventListener('keyup', event => {
+  writeText(secondImageTextInput, secondTextEntry)
+});
+
+let secondImageTextSize = document.getElementById("secondImageTextSize");
+secondImageTextSize.addEventListener('keyup', event => {
+  updateTextSize(secondImageTextSize, secondTextEntry);
+});
+
+let secondImageTextButton = document.getElementById("textEditSecondImage");
+secondImageTextButton.addEventListener('click', event => { 
+  renderTextBox(secondSticker, secondImageSaveBtn, saveSecondSticker, secondTextEntry, secondImageTextSize);
+});
+
+
+let thirdImageTextInput = document.getElementById("textInputThirdImage");
+let thirdTextEntry = document.getElementById("thirdTextEntry");
+thirdImageTextInput.addEventListener('keyup', event => {
+  writeText(thirdImageTextInput, thirdTextEntry)
+});
+
+let thirdImageTextSize = document.getElementById("thirdImageTextSize");
+thirdImageTextSize.addEventListener('keyup', event => {
+  updateTextSize(thirdImageTextSize, thirdTextEntry);
+});
+
+let thirdImageTextButton = document.getElementById("textEditThirdImage");
+thirdImageTextButton.addEventListener('click', event => { 
+  renderTextBox(thirdSticker, thirdImageSaveBtn, saveThirdSticker, thirdTextEntry, thirdImageTextSize);
+});
+
+
+let fourthImageTextInput = document.getElementById("textInputFourthImage");
+let fourthTextEntry = document.getElementById("fourthTextEntry");
+fourthImageTextInput.addEventListener('keyup', event => {
+  writeText(fourthImageTextInput, fourthTextEntry)
+});
+
+let fourthImageTextSize = document.getElementById("fourthImageTextSize");
+fourthImageTextSize.addEventListener('keyup', event => {
+  updateTextSize(fourthImageTextSize, fourthTextEntry);
+});
+
+let fourthImageTextButton = document.getElementById("textEditFourthImage");
+fourthImageTextButton.addEventListener('click', event => { 
+  renderTextBox(fourthSticker, fourthImageSaveBtn, saveFourthSticker, fourthTextEntry, fourthImageTextSize);
+});
+
+
 function saveImage(sticker) {
+  sticker.imageCanvas.setAttribute('crossorigin', 'anonymous');
   let newUrl = sticker.imageCanvas.toDataURL();
   sticker.currImage.setAttribute('crossorigin', 'anonymous');
   sticker.currImage.src = newUrl;

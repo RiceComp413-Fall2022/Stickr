@@ -10,16 +10,41 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='search.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css"/>   -->
+
 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" type="text/javascript"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
   <script type="text/javascript">
     let firstImageLoc = '{{ image_urls[0] }}'
     let secondImageLoc = '{{ image_urls[1] }}'
     let thirdImageLoc = '{{ image_urls[2] }}'
     let fourthImageLoc = '{{ image_urls[3] }}'
+    let query = '{{ query }}'
   </script>
+  <!-- Imports for colorwheel -->
+  <!-- <script src="https://unpkg.com/vanilla-picker@2"></script> -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.js"></script>
+
+
+  <script type=text/javascript>
+    function download_from_url(url, filename) {
+      var underscore_filename = filename.replace(/ /g,"_");
+      fetch(url).then(function(t) {
+          return t.blob().then((b)=>{
+              var a = document.createElement("a");
+              a.href = URL.createObjectURL(b);
+              a.setAttribute("download", underscore_filename);
+              a.click();
+          }
+          );
+      });
+    }
+  </script>
+  
   <script type="module" src="{{ url_for('static', filename='search.js') }}" ></script>
 
 
@@ -33,17 +58,20 @@
   <div id="results">
 
     <script type=text/javascript>
-      function download_from_url(url, filename) {
-        var underscore_filename = filename.replace(/ /g,"_");
-        fetch(url).then(function(t) {
-            return t.blob().then((b)=>{
-                var a = document.createElement("a");
-                a.href = URL.createObjectURL(b);
-                a.setAttribute("download", underscore_filename);
-                a.click();
-            }
-            );
-        });
+      function vary_image(url) {
+           fetch(url).then(res => res.blob())
+          .then(blob => {
+              const formData = new FormData();
+              formData.append('image', blob, 'image');
+              formData.append("url", url);
+              fetch("{{ url_for('search', query=query) }}", {
+                      method: "POST",
+                      body: formData
+                  }).then(response => response.text()).then((newUrl) => {
+                      console.log(newUrl)
+                      firstImage.src = newUrl
+                  });
+          });
       }
     </script>
     
@@ -52,16 +80,24 @@
       <button id="openFirstImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_1_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
+
+        <button class="btn btn-default"  onclick="vary_image(firstImage.src)">
+            <i class="glyphicon glyphicon-random"></i>
+        </button>
+
       <button class='btn' onclick="download_from_url(firstImage.src, 'download_{{query}}_1.png')">
         <i class="fa fa-download"></i>
       </button>
     </div>
 
     <div class="container" id="img_2">
-      <img id="secondImage" src={{ image_urls[1] }} alt="query result two"/>
+      <img id="secondImage" src={{ image_urls[1] }} alt="query result two">
       <button id="openSecondImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_2_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
+        <button class="btn btn-default"  onclick="vary_image(secondImage.src)">
+            <i class="glyphicon glyphicon-random"></i>
+        </button>
       <button class='btn' onclick="download_from_url(secondImage.src, 'download_{{query}}_2.png')">
         <i class="fa fa-download"></i>
       </button>
@@ -72,6 +108,9 @@
       <button id="openThirdImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_3_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
+        <button class="btn btn-default"  onclick="vary_image(thirdImage.src)">
+            <i class="glyphicon glyphicon-random"></i>
+        </button>
       <button class='btn' onclick="download_from_url(thirdImage.src, 'download_{{query}}_3.png')">
         <i class="fa fa-download"></i>
       </button>
@@ -82,9 +121,13 @@
       <button id="openFourthImageModal" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#img_4_modal">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
+        <button class="btn btn-default"  onclick="vary_image(fourthImage.src)">
+            <i class="glyphicon glyphicon-random"></i>
+        </button>
       <button class='btn' onclick="download_from_url(fourthImage.src, 'download_{{query}}_4.png')">
         <i class="fa fa-download"></i>
       </button>
+      
     </div>
 
       <!-- Button trigger modal -->
@@ -108,9 +151,11 @@
         </div>
       </div>
     </div>
-
+    </div> 
+    
     <!-- Modals for Editing -->
     <div class="modal fade bd-example-modal-lg" id="img_1_modal" tabindex="-1" role="dialog" aria-labelledby="Editing View for Image 1" aria-hidden="true"> -->
+
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -149,14 +194,30 @@
               <div class="toolbar-item">
                 <label class="tool-label" for="crop">Text Editing</label>
                 <button id="textEditFirstImage" type="button" class="btn btn-primary">Add Text</button>
-                <input id="textInputFirstImage" class="tool-text-input" type="text" placeholder="Enter Text">
-                <input id="textInputFirstImageSubmitBtn" class="tool-submit-input" type="submit" value="Submit">
+                <textarea id="textInputFirstImage" class="tool-text-input" type="text" placeholder="Enter Text"></textarea>
+                <!-- <h4>Change Text Color Below</h4> -->
+                <label class="tool-label" for="crop">Text Color</label>
+                <input id="firstImageTextColor" type="text" value="#269FAF" class="form-control"/>
+                <label class="tool-label" for="crop">Text Size</label>
+                <input id="firstImageTextSize" type="text" value="14"/>
+                <script type="text/javascript">
+                  $(function () {
+                    $('#firstImageTextColor')
+                    .colorpicker({})
+                    .on('colorpickerChange', function (e) { //change the bacground color of the main when the color changes  
+                        new_color = e.color.toString();
+                        $('#firstTextEntry').css('color', new_color);
+                        })     
+                    });
+                </script>
               </div>
+            
               
             </div>
-            
+
             <div id = "firstImageArea" class="image-area">
               <canvas id="firstImageCanvas" height="500" width="500"></canvas>
+              <div id="firstTextEntry" draggable="true" z-index="500" class="textEntry">Sample Text</div>
             </div>
           </div>
           <div class="modal-footer">
@@ -202,10 +263,32 @@
                 <button id="cropSecondImage" type="button" class="btn btn-primary">Crop</button>
               </div>
 
+              <div class="toolbar-item">
+                <label class="tool-label" for="crop">Text Editing</label>
+                <button id="textEditSecondImage" type="button" class="btn btn-primary">Add Text</button>
+                <textarea id="textInputSecondImage" class="tool-text-input" type="text" placeholder="Enter Text"></textarea>
+                <!-- <h4>Change Text Color Below</h4> -->
+                <label class="tool-label" for="crop">Text Color</label>
+                <input id="secondImageTextColor" type="text" value="#269FAF" class="form-control"/>
+                <label class="tool-label" for="crop">Text Size</label>
+                <input id="secondImageTextSize" type="text" value="14"/>
+                <script type="text/javascript">
+                  $(function () {
+                    $('#secondImageTextColor')
+                    .colorpicker({})
+                    .on('colorpickerChange', function (e) { //change the bacground color of the main when the color changes  
+                        new_color = e.color.toString();
+                        $('#secondTextEntry').css('color', new_color);
+                        })     
+                    });
+                </script>
+              </div>
+
             </div>
             
             <div class="image-area">
               <canvas id="secondImageCanvas" height="500" width="500"></canvas>
+              <div id="secondTextEntry" draggable="true" z-index="500" class="textEntry">Sample Text</div>
             </div>
           </div>
           <div class="modal-footer">
@@ -251,10 +334,31 @@
                 <button id="cropThirdImage" type="button" class="btn btn-primary">Crop</button>
               </div>
 
+              <div class="toolbar-item">
+                <label class="tool-label" for="crop">Text Editing</label>
+                <button id="textEditThirdImage" type="button" class="btn btn-primary">Add Text</button>
+                <textarea id="textInputThirdImage" class="tool-text-input" type="text" placeholder="Enter Text"></textarea>
+                <label class="tool-label" for="crop">Text Color</label>
+                <input id="thirdImageTextColor" type="text" value="#269FAF" class="form-control"/>
+                <label class="tool-label" for="crop">Text Size</label>
+                <input id="thirdImageTextSize" type="text" value="14"/>
+                <script type="text/javascript">
+                  $(function () {
+                    $('#thirdImageTextColor')
+                    .colorpicker({})
+                    .on('colorpickerChange', function (e) { //change the bacground color of the main when the color changes  
+                        new_color = e.color.toString();
+                        $('#thirdTextEntry').css('color', new_color);
+                        })     
+                    });
+                </script>
+              </div>
+
             </div>
             
             <div class="image-area">
               <canvas id="thirdImageCanvas" height="500" width="500"></canvas>
+              <div id="thirdTextEntry" draggable="true" z-index="500" class="textEntry">Sample Text</div>
             </div>
           </div>
           <div class="modal-footer">
@@ -300,10 +404,31 @@
                 <button id="cropFourthImage" type="button" class="btn btn-primary">Crop</button>
               </div>
 
+              <div class="toolbar-item">
+                <label class="tool-label" for="crop">Text Editing</label>
+                <button id="textEditFourthImage" type="button" class="btn btn-primary">Add Text</button>
+                <textarea id="textInputFourthImage" class="tool-text-input" type="text" placeholder="Enter Text"></textarea>
+                <label class="tool-label" for="crop">Text Color</label>
+                <input id="fourthImageTextColor" type="text" value="#269FAF" class="form-control"/>
+                <label class="tool-label" for="crop">Text Size</label>
+                <input id="fourthImageTextSize" type="text" value="14"/>
+                <script type="text/javascript">
+                  $(function () {
+                    $('#fourthImageTextColor')
+                    .colorpicker({})
+                    .on('colorpickerChange', function (e) { //change the bacground color of the main when the color changes  
+                        new_color = e.color.toString();
+                        $('#fourthTextEntry').css('color', new_color);
+                        })     
+                    });
+                </script>
+              </div>
+
             </div>
             
             <div class="image-area">
               <canvas id="fourthImageCanvas" height="500" width="500"></canvas>
+              <div id="fourthTextEntry" draggable="true" z-index="500" class="textEntry">Sample Text</div>
             </div>
           </div>
           <div class="modal-footer">
@@ -317,7 +442,7 @@
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
