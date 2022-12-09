@@ -61,9 +61,9 @@ def engineer_prompt(query, cutout, style):
   if style == 'Mono':
     final_query += ', monochrome line'
   elif style == 'Vivid':
-    final_query += ', dramatic illustration, hd'
+    final_query += ', hd dramatic illustration'
   elif style == 'Abstract':
-    final_query = 'abstract' + final_query + 'detailed sticker, artstation hd'
+    final_query = 'Abstract ' + final_query + ' detailed sticker, artstation hd'
 
 
   # Append cutout specification
