@@ -29,7 +29,7 @@ def search(query, model):
           image_urls = generate_stable_diffusion_sticker(query)
         else:
           image_urls = generate_dalle_sticker(query)
-        return render_template('search.html', query=query, image_urls=image_urls)
+        return render_template('search.html', query=query, image_urls=image_urls, model=model)
 
     elif request.method == 'POST':
         # Get the image from form

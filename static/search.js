@@ -660,3 +660,49 @@ fourthImageBlurInput.addEventListener("change", () =>
 fourthImageInversionInput.addEventListener("change", () =>
   updateImageSetting(fourthSticker, "inversion", fourthImageInversionInput.value)
 );  
+
+// Attempts at further usage of variations
+
+// var cors_access_link = 'https://cors-anywhere.herokuapp.com/';
+// function vary_image(sticker) {
+//   fetch(cors_access_link+sticker.image.src).then(res => res.blob())
+//  .then(blob => {
+//      const formData = new FormData();
+//      formData.append('image', blob, 'image');
+//      formData.append("url", sticker.image.src);
+//     //  fetch(url_for('search', query=query, model=model), {
+//     //          method: "POST",
+//     //          body: formData
+//     //      }).then(response => response.text()).then((newUrl) => {
+//     //          console.log(newUrl);
+//     //          sticker.image.src = cors_access_link+newUrl;
+//     //          sticker.imageLoc = cors_access_link+newUrl;
+//     //      });
+//     fetch_from_search(query, "filler_model_name", formData).then(response => response.text()).then((newUrl) => {
+//                console.log(newUrl);
+//                sticker.image.src = cors_access_link+newUrl;
+//                sticker.imageLoc = cors_access_link+newUrl;
+//            });
+//  });
+// }
+
+// let firstStickerVariation = document.getElementById("firstStickerVariation");
+// firstStickerVariation.addEventListener('click', event => {
+//   console.log('Within ');
+//   vary_image(firstSticker);
+// });
+
+// let secondStickerVariation = document.getElementById("secondStickerVariation");
+// secondStickerVariation.addEventListener('click', event => {
+//   vary_image(secondSticker);
+// });
+
+// let thirdStickerVariation = document.getElementById("thirdStickerVariation");
+// thirdStickerVariation.addEventListener('click', event => {
+//   vary_image(thirdSticker);
+// });
+
+// let fourthStickerVariation = document.getElementById("fourthStickerVariation");
+// fourthStickerVariation.addEventListener('click', event => {
+//   vary_image(fourthSticker);
+// });
