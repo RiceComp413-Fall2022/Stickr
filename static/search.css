@@ -32,6 +32,12 @@ h1 {
   margin: 1.66%;
 }
 
+#helpBtn {
+  position: fixed;
+  bottom: 5px;
+  right: 10px;
+}
+
 .container {
   position: relative;
   width: 50%;

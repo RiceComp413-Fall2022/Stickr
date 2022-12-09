@@ -127,6 +127,30 @@
       <button class='btn' onclick="download_from_url(fourthImage.src, 'download_{{query}}_4.png')">
         <i class="fa fa-download"></i>
       </button>
+      
+    </div>
+
+      <!-- Button trigger modal -->
+    <button id="helpBtn" type="button" class="btn btn-default" data-toggle="modal" data-target="#helpModal">
+      <span class="glyphicon glyphicon-question-sign"></span>
+    </button>
+
+      <!-- Modal for help information-->
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="helpModalLabel">How to Use?</h5>
+          </div>
+          <div class="modal-body">
+            How to use?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     </div> 
     
     <!-- Modals for Editing -->
